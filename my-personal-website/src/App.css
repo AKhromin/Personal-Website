@@ -1,0 +1,137 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: black;
+  color: white;
+}
+
+.top-bar {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-top: 50px; /* Add margin-top to move it down */
+}
+
+.oval-background {
+  background-color: rgba(139, 129, 150, 0.538);
+  border-radius: 50px; /* Oval shape */
+  padding: 20px 40px; /* Adjust padding to make it larger than the buttons */
+  position: absolute;
+  z-index: 0; /* Ensure it is behind the buttons */
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  z-index: 1; /* Ensure buttons are in front of the oval background */
+}
+
+.top-bar a {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 25px; /* Rectangular oval shape */
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.top-bar a:hover {
+  background-color: #ddd;
+}
+
+.top-bar a:active {
+  background-color: #bbb;
+  transform: scale(0.95); /* Click effect */
+}
+
+section {
+  padding: 50px;
+  margin: 50px 0;
+}
+
+.timeline {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  background-color: #ddd;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -3px;
+}
+
+.timeline-item {
+  padding: 10px 40px;
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+}
+
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -17px;
+  background-color: white;
+  border: 4px solid #FF9F55;
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.timeline-item.left {
+  left: 0;
+}
+
+.timeline-item.right {
+  left: 50%;
+}
+
+.timeline-item .content {
+  padding: 20px 30px;
+  background-color: white;
+  position: relative;
+  border-radius: 6px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
