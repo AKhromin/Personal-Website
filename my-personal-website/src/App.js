@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import emailjs from 'emailjs-com';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +12,28 @@ function App() {
   const educationRef = useRef(null);
   const skillsRef = useRef(null);
   const contactRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in-left');
+        } else {
+          entry.target.classList.remove('fade-in-left');
+        }
+      });
+    }, { threshold: 0.1 });
+  
+    document.querySelectorAll('[class$="-content"]').forEach(section => {
+      observer.observe(section);
+    });
+  
+    return () => {
+      document.querySelectorAll('[class$="-content"]').forEach(section => {
+        observer.unobserve(section);
+      });
+    };
+  }, []);
 
   const scrollToSection = (elementRef) => {
     window.scrollTo({
@@ -66,63 +88,84 @@ function App() {
       </div>
 
       <section id="aboutSection" ref={aboutRef}>
-        <div class="about-content">
+        <div className="about-content">
 
-          <div class="aboutText">
-            <h2>About Me</h2>
-            <p>Hello! My name is Alexey. Welcome to my personal website. Here you can find information about my projects, education, skills, and how to contact me.</p>
-          </div>
-
-          <div class="profile-picture">
-            <img src="/assets/images/ProfilePicture.jpg" alt="ProfilePic"/>
-          </div>
+            <div className="aboutText">
+              <h1>About Me</h1>
+              <p>Hello! My name is Alexey. Welcome to my personal website. Here you can find information about my projects, education, skills, and how to contact me.</p>
+            </div>
+            <div className="profile-picture">
+              <img src="/assets/images/ProfilePicture.jpg" alt="ProfilePic"/>
+            </div>
 
         </div>
       </section>
 
       <section id="projectsSection" ref={projectsRef}>
-        <div className="projectsText">
-          <h2>Projects</h2>
-        </div>
+        <div className = "projects-content">
 
-        <div className="timeline">
-
-          <div className="timeline-item left">
-            <div className="content">
-              <h3>Example 1</h3>
-              <p>Details about Example 1.</p>
-            </div>
+          <div className="projectsText">
+            <h2>Projects</h2>
           </div>
 
-          <div className="timeline-item right">
-            <div className="content">
-              <h3>Example 2</h3>
-              <p>Details about Example 2.</p>
+          <div className="timeline">
+
+            <div className="timeline-item left">
+              <div className="content">
+                <h3>Example 1</h3>
+                <p>Details about Example 1.</p>
+              </div>
             </div>
+
+            <div className="timeline-item right">
+              <div className="content">
+                <h3>Example 2</h3>
+                <p>Details about Example 2.</p>
+              </div>
+            </div>
+
           </div>
 
         </div>
       </section>
 
       <section id="educationSection" ref={educationRef}>
-        <h2>Education</h2>
-        <p>Details about education.</p>
+        <div className="education-content">
+          
+          <div className="educationText">
+            <h2>Education</h2>
+            <p>Details about education.</p>
+          </div>
+
+        </div>
       </section>
 
       <section id="skillsSection" ref={skillsRef}>
-        <h2>Skills</h2>
+        <div className="skills-content">
+
+          <div className="skillsText">
+            <h2>Skills</h2>
+          </div>
+
+        </div>
       </section>
       
       <section id="contactSection" ref={contactRef}>
-        <h2>Contact</h2>
-        <form ref={form} onSubmit={sendEmail}>
-          <label>Your Email</label>
-          <input type="email" name="user_email" required />
-          <label>Message</label>
-          <textarea name="message" required />
-          <button type="submit">Send</button>
-        </form>
+        <div className="contacts-content">
+          <div className="contactText">
+            <h2>Contact</h2>
+          </div>   
+               
+          <form ref={form} onSubmit={sendEmail}>
+            <label>Your Email</label>
+            <input type="email" name="user_email" required />
+            <label>Message</label>
+            <textarea name="message" required />
+            <button type="submit">Send</button>
+          </form>
+        </div>
       </section>
+  
     </div>
   );
 }

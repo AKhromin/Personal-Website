@@ -34,12 +34,18 @@ body {
 .about, .projects, .education, .skills, .contact {
   background-color: #3e5c76;
   color: white;
+  font-weight: bold;
   border: none;
   padding: 10px 20px;
   text-decoration: none;
   cursor: pointer;
   border-radius: 25px; /* Rectangular oval shape */
   transition: background-color 0.3s, transform 0.1s;
+}
+
+.about:hover, .projects:hover, .education:hover, .skills:hover, .contact:hover {
+  background-color: #253747; /* Darker shade for hover effect */
+  transform: scale(1.05); /* Slightly enlarge the button */
 }
 
 section {
@@ -53,7 +59,7 @@ section {
 }
 
 .aboutText {
-  color: black;
+  color: #1d2d44;
 }
 
 #projectsSection {
@@ -61,19 +67,31 @@ section {
 }
 
 .projectsText {
-  color: black;
+  color: #1d2d44;
 }
 
 #educationSection {
   background-color: #748cab; 
 }
 
+.educationText {
+  color: #1d2d44;
+}
+
 #skillsSection {
   background-color: #f0ebd8; 
 }
 
+.skillsText {
+  color: #1d2d44;
+}
+
 #contactSection {
   background-color: #748cab;
+}
+
+.contactText {
+  color: #1d2d44;
 }
 
 .about-content {
@@ -91,6 +109,27 @@ section {
   margin-left: 20px;
 }
 
+/* Define the fade-in animation */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply the animation when the section is in view */
+.fade-in-left {
+  opacity: 0; /* Start with opacity 0 */
+  animation: fadeInLeft 1s forwards; /* 1s duration, forwards to retain the final state */
+}
+
+[class$="-content"] {
+  opacity: 0;
+}
 
 
 .timeline {
@@ -160,13 +199,14 @@ input, textarea {
 
 button {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #3e5c76;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #253747;
 }
