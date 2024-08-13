@@ -7,6 +7,19 @@ import './App.css';
 function App() {
   const form = useRef();
 
+  const aboutRef = useRef(null);
+  const projectsRef = useRef(null);
+  const educationRef = useRef(null);
+  const skillsRef = useRef(null);
+  const contactRef = useRef(null);
+
+  const scrollToSection = (elementRef) => {
+    window.scrollTo({
+      top: elementRef.current.offsetTop,
+      behavior: 'smooth'
+    });
+  };
+
   const sendEmail = (e) => {
     e.preventDefault();
 
@@ -41,45 +54,66 @@ function App() {
     <div className="App">
       <ToastContainer />
       <div className="top-bar">
-        <div className="oval-background">
-          <div className="buttons">
-            <a href="#about">ABOUT</a>
-            <a href="#projects">PROJECTS</a>
-            <a href="#education">EDUCATION</a>
-            <a href="#skills">SKILLS</a>
-            <a href="#contact">CONTACT</a>
-          </div>
+
+        <div className="buttons">
+        <a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection(aboutRef); }} className="about">ABOUT</a>
+          <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection(projectsRef); }} className="projects">PROJECTS</a>
+          <a href="#education" onClick={(e) => { e.preventDefault(); scrollToSection(educationRef); }} className="education">EDUCATION</a>
+          <a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection(skillsRef); }} className="skills">SKILLS</a>
+          <a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection(contactRef); }} className="contact">CONTACT</a>
+        
         </div>
       </div>
-      <section id="about">
-        <h2>About Me</h2>
-        <p>Hello! My name is Alexey. Welcome to my personal website. Here you can find information about my projects, education, skills, and how to contact me.</p>
+
+      <section id="aboutSection" ref={aboutRef}>
+        <div class="about-content">
+
+          <div class="aboutText">
+            <h2>About Me</h2>
+            <p>Hello! My name is Alexey. Welcome to my personal website. Here you can find information about my projects, education, skills, and how to contact me.</p>
+          </div>
+
+          <div class="profile-picture">
+            <img src="/assets/images/ProfilePicture.jpg" alt="ProfilePic"/>
+          </div>
+
+        </div>
       </section>
-      <section id="projects">
-        <h2>Projects</h2>
+
+      <section id="projectsSection" ref={projectsRef}>
+        <div className="projectsText">
+          <h2>Projects</h2>
+        </div>
+
         <div className="timeline">
+
           <div className="timeline-item left">
             <div className="content">
               <h3>Example 1</h3>
               <p>Details about Example 1.</p>
             </div>
           </div>
+
           <div className="timeline-item right">
             <div className="content">
               <h3>Example 2</h3>
               <p>Details about Example 2.</p>
             </div>
           </div>
+
         </div>
       </section>
-      <section id="education">
+
+      <section id="educationSection" ref={educationRef}>
         <h2>Education</h2>
         <p>Details about education.</p>
       </section>
-      <section id="skills">
+
+      <section id="skillsSection" ref={skillsRef}>
         <h2>Skills</h2>
       </section>
-      <section id="contact">
+      
+      <section id="contactSection" ref={contactRef}>
         <h2>Contact</h2>
         <form ref={form} onSubmit={sendEmail}>
           <label>Your Email</label>

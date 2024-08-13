@@ -4,27 +4,24 @@ html {
 
 body {
   font-family: Arial, sans-serif;
-  background-color: black;
+  background-color: #748cab;
   color: white;
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
 }
 
 .top-bar {
-  background-color: black;
+  background-color: #748cab;
   color: white;
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  margin-top: 50px; /* Add margin-top to move it down */
-}
-
-.oval-background {
-  background-color: rgba(139, 129, 150, 0.538);
-  border-radius: 50px; /* Oval shape */
-  padding: 20px 40px; /* Adjust padding to make it larger than the buttons */
-  position: absolute;
-  z-index: 0; /* Ensure it is behind the buttons */
+  position: absolute; /* Change to absolute positioning */
+  top: 20px; /* Position it at the top */
+  right: 10px; /* Position it at the right */
+  z-index: 1000; /* Ensure it is on top of other elements */
 }
 
 .buttons {
@@ -34,9 +31,9 @@ body {
   z-index: 1; /* Ensure buttons are in front of the oval background */
 }
 
-.top-bar a {
-  background-color: white;
-  color: black;
+.about, .projects, .education, .skills, .contact {
+  background-color: #3e5c76;
+  color: white;
   border: none;
   padding: 10px 20px;
   text-decoration: none;
@@ -45,19 +42,56 @@ body {
   transition: background-color 0.3s, transform 0.1s;
 }
 
-.top-bar a:hover {
-  background-color: #ddd;
-}
-
-.top-bar a:active {
-  background-color: #bbb;
-  transform: scale(0.95); /* Click effect */
-}
-
 section {
   padding: 50px;
   margin: 50px 0;
+  text-align: left;
 }
+
+#aboutSection {
+  background-color: #748cab;
+}
+
+.aboutText {
+  color: black;
+}
+
+#projectsSection {
+  background-color: #f0ebd8;
+}
+
+.projectsText {
+  color: black;
+}
+
+#educationSection {
+  background-color: #748cab; 
+}
+
+#skillsSection {
+  background-color: #f0ebd8; 
+}
+
+#contactSection {
+  background-color: #748cab;
+}
+
+.about-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.profile-picture {
+  flex: 0 0 150px;
+  margin-left: 20px;
+}
+
+
 
 .timeline {
   position: relative;
@@ -115,6 +149,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 0 auto;
 }
 
 input, textarea {
