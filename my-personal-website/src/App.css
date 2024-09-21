@@ -105,8 +105,20 @@ section {
 }
 
 .profile-picture {
-  flex: 0 0 150px;
+  width: 200px; /* Set a fixed width */
+  height: 200px; /* Set the same height to make it a circle */
   margin-left: 20px;
+  border-radius: 50%; /* Make the container circular */
+  overflow: hidden; /* Ensure the image fits within the circular container */
+  position: relative;
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container without distortion */
+  display: block;
+  top: 20px;
 }
 
 /* Define the fade-in animation */

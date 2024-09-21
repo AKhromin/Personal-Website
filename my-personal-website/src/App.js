@@ -94,8 +94,9 @@ function App() {
               <h1>About Me</h1>
               <p>Hello! My name is Alexey. Welcome to my personal website. Here you can find information about my projects, education, skills, and how to contact me.</p>
             </div>
+            
             <div className="profile-picture">
-              <img src="/assets/images/ProfilePicture.jpg" alt="ProfilePic"/>
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ProfilePicture.jpg`} alt="ProfilePic"/>
             </div>
 
         </div>
