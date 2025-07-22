@@ -25,14 +25,27 @@ body {
 .top-bar {
   background-color: var(--primary-color);
   color: white;
-  padding: 10px;
+  padding: 15px 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 20px;
-  right: 10px;
   z-index: 1000;
+  width: 100%;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.top-bar.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(62, 92, 118, 0.85); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.top-bar-placeholder {
+  height: 66px; /* Adjust to match the height of your top-bar */
 }
 
 .buttons {
@@ -42,8 +55,8 @@ body {
   z-index: 1;
 }
 
-.about, .projects, .education, .skills, .contact {
-  background-color: var(--secondary-color);
+.nav-button {
+  background-color: transparent;
   color: white;
   font-weight: bold;
   border: none;
@@ -51,12 +64,38 @@ body {
   text-decoration: none;
   cursor: pointer;
   border-radius: var(--border-radius-button);
-  transition: background-color var(--transition-standard), transform 0.1s;
+  transition: color var(--transition-standard), transform 0.2s ease-out;
+  position: relative;
 }
 
-.about:hover, .projects:hover, .education:hover, .skills:hover, .contact:hover {
-  background-color: var(--accent-color);
-  transform: scale(1.05);
+.nav-button:hover {
+  color: var(--timeline-accent);
+  transform: translateY(-2px);
+}
+
+.nav-button::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--timeline-accent);
+  transition: width 0.3s ease-in-out;
+}
+
+.nav-button.active::after {
+  width: 60%;
+}
+
+.nav-button.active {
+  color: var(--timeline-accent);
+}
+
+/* Remove old button styles */
+.about, .projects, .education, .skills, .contact {
+  display: none;
 }
 
 section {
@@ -77,6 +116,8 @@ section {
 /* Section text colors */
 .aboutText, .projectsText, .educationText, .skillsText, .contactText {
   color: var(--text-color-dark);
+  /* ✅ FIXED: Added margin for consistent spacing below titles */
+  margin-bottom: 40px; 
 }
 
 .about-content {
@@ -117,13 +158,14 @@ section {
   animation: fadeInLeft 1s forwards;
 }
 
-[class$="-content"] {
+/* ✅ FIXED: Selector is now more specific to avoid affecting modal content */
+section > [class$="-content"] {
   opacity: 0;
 }
 
 .timeline {
   position: relative;
-  max-width: 600px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -143,6 +185,14 @@ section {
   position: relative;
   background-color: inherit;
   width: 50%;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.timeline-item:hover {
+  transform: scale(1.05);
 }
 
 .timeline-item::after {
@@ -150,12 +200,20 @@ section {
   position: absolute;
   width: 25px;
   height: 25px;
-  right: -17px;
   background-color: white;
   border: 4px solid var(--timeline-accent);
   top: 15px;
   border-radius: 50%;
   z-index: 1;
+}
+
+/* Position the circles for left and right items */
+.timeline-item.left::after {
+  right: -12px;
+}
+
+.timeline-item.right::after {
+  left: -17px;
 }
 
 .timeline-item.left {
@@ -166,11 +224,44 @@ section {
   left: 50%;
 }
 
+/* Add arrows to content boxes */
 .timeline-item .content {
   padding: 20px 30px;
   background-color: white;
   position: relative;
   border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--text-color-dark);
+  transition: all var(--transition-standard);
+}
+
+.timeline-item .content:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Create arrows pointing to timeline */
+.timeline-item.left .content::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  right: -10px;
+  width: 0; 
+  height: 0; 
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid white;
+}
+
+.timeline-item.right .content::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: -10px;
+  width: 0; 
+  height: 0; 
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid white;
 }
 
 form {
@@ -198,4 +289,275 @@ button {
 
 button:hover {
   background-color: var(--accent-color);
+}
+
+/* Modal styles (Unaffected by the pane view) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  isolation: isolate;
+}
+
+.modal-content {
+  background-color: white;
+  color: var(--text-color-dark);
+  width: 80%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  animation: scaleIn 0.3s ease-in-out;
+  margin: 20px;
+  z-index: 10000;
+  transform: translateZ(0);
+}
+
+.close-button {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #888;
+  transition: all 0.2s ease;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 10100;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.close-button:hover {
+  color: var(--accent-color);
+  background-color: rgba(0,0,0,0.05);
+}
+
+.modal-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.technologies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.tech-tag {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes scaleOut {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.9); opacity: 0; }
+}
+
+.modal-closing {
+  animation: fadeOut 0.3s ease-in-out forwards;
+  pointer-events: none;
+}
+
+.modal-closing .modal-content {
+  animation: scaleOut 0.3s ease-in-out forwards;
+}
+
+.timeline-item .content {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.timeline-item .content:hover {
+  transform: translateY(-3px);
+}
+
+.timeline-item .content:focus {
+  outline: 2px solid var(--timeline-accent);
+  outline-offset: 2px;
+}
+
+/* ----- START: NEW STYLES FOR PANE VIEW ----- */
+
+#projectsSection {
+  background-color: var(--light-background);
+  color: var(--text-color-dark);
+}
+
+/* ✅ FIXED: Removed the .projects-header rule that was centering the title */
+
+/* ✅ FIXED: Renamed .projects-layout to .projects-content for consistency */
+.projects-content {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.timeline-container {
+  flex: 6;
+}
+
+.details-pane {
+  flex: 4;
+  position: sticky;
+  top: 100px; /* Sticks below the sticky nav bar */
+  background-color: white;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  
+  /* Hidden by default */
+  opacity: 0;
+  transform: translateY(20px);
+  visibility: hidden;
+}
+
+.details-pane.is-visible {
+  /* Visible when a project is selected */
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.pane-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: #888;
+  text-align: center;
+}
+
+.pane-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: #aaa;
+  cursor: pointer;
+  padding: 5px;
+}
+.pane-close-button:hover {
+  color: var(--text-color-dark);
+}
+
+.pane-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.timeline-item .content.active-project {
+  border: 2px solid var(--secondary-color);
+  box-shadow: 0 8px 25px rgba(62, 92, 118, 0.3);
+  transform: scale(1.03);
+}
+
+/* ----- RESPONSIVE STYLES ----- */
+
+@media screen and (max-width: 900px) {
+  /* Pane view responsive adjustments */
+  .projects-content { /* ✅ FIXED: Renamed from .projects-layout */
+    flex-direction: column;
+  }
+  .details-pane {
+    width: 100%;
+    position: relative;
+    top: 0;
+    margin-top: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  /* Original responsive adjustments */
+  .timeline::after {
+    left: 31px;
+  }
+  
+  .timeline-item {
+    width: 100%;
+    padding-left: 70px;
+    padding-right: 25px;
+  }
+  
+  .timeline-item.left, .timeline-item.right {
+    left: 0;
+  }
+  
+  .timeline-item.left::after, .timeline-item.right::after {
+    left: 15px;
+    right: auto;
+  }
+  
+  .timeline-item.left .content::after, .timeline-item.right .content::after {
+    left: -10px;
+    right: auto;
+    border-left: 0;
+    border-right: 10px solid white;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .about-content {
+    flex-direction: column-reverse;
+  }
+  
+  .profile-picture {
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
 }
