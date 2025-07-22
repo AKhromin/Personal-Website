@@ -1,51 +1,62 @@
+:root {
+  --primary-color: #748cab;
+  --secondary-color: #3e5c76;
+  --accent-color: #253747;
+  --light-background: #f0ebd8;
+  --text-color-dark: #1d2d44;
+  --timeline-accent: #FF9F55;
+  --border-radius-button: 25px;
+  --border-radius-form: 5px;
+  --transition-standard: 0.3s;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #748cab;
+  background-color: var(--primary-color);
   color: white;
-  scroll-behavior: smooth;
   margin: 0;
   padding: 0;
 }
 
 .top-bar {
-  background-color: #748cab;
+  background-color: var(--primary-color);
   color: white;
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute; /* Change to absolute positioning */
-  top: 20px; /* Position it at the top */
-  right: 10px; /* Position it at the right */
-  z-index: 1000; /* Ensure it is on top of other elements */
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  z-index: 1000;
 }
 
 .buttons {
   display: flex;
   gap: 10px;
   position: relative;
-  z-index: 1; /* Ensure buttons are in front of the oval background */
+  z-index: 1;
 }
 
 .about, .projects, .education, .skills, .contact {
-  background-color: #3e5c76;
+  background-color: var(--secondary-color);
   color: white;
   font-weight: bold;
   border: none;
   padding: 10px 20px;
   text-decoration: none;
   cursor: pointer;
-  border-radius: 25px; /* Rectangular oval shape */
-  transition: background-color 0.3s, transform 0.1s;
+  border-radius: var(--border-radius-button);
+  transition: background-color var(--transition-standard), transform 0.1s;
 }
 
 .about:hover, .projects:hover, .education:hover, .skills:hover, .contact:hover {
-  background-color: #253747; /* Darker shade for hover effect */
-  transform: scale(1.05); /* Slightly enlarge the button */
+  background-color: var(--accent-color);
+  transform: scale(1.05);
 }
 
 section {
@@ -54,44 +65,18 @@ section {
   text-align: left;
 }
 
-#aboutSection {
-  background-color: #748cab;
+/* Section backgrounds - alternating pattern */
+#aboutSection, #educationSection, #contactSection {
+  background-color: var(--primary-color);
 }
 
-.aboutText {
-  color: #1d2d44;
+#projectsSection, #skillsSection {
+  background-color: var(--light-background);
 }
 
-#projectsSection {
-  background-color: #f0ebd8;
-}
-
-.projectsText {
-  color: #1d2d44;
-}
-
-#educationSection {
-  background-color: #748cab; 
-}
-
-.educationText {
-  color: #1d2d44;
-}
-
-#skillsSection {
-  background-color: #f0ebd8; 
-}
-
-.skillsText {
-  color: #1d2d44;
-}
-
-#contactSection {
-  background-color: #748cab;
-}
-
-.contactText {
-  color: #1d2d44;
+/* Section text colors */
+.aboutText, .projectsText, .educationText, .skillsText, .contactText {
+  color: var(--text-color-dark);
 }
 
 .about-content {
@@ -100,28 +85,22 @@ section {
   justify-content: space-between;
 }
 
-.about-text {
-  flex: 1;
-}
-
 .profile-picture {
-  width: 200px; /* Set a fixed width */
-  height: 200px; /* Set the same height to make it a circle */
+  width: 200px;
+  height: 200px;
   margin-left: 20px;
-  border-radius: 50%; /* Make the container circular */
-  overflow: hidden; /* Ensure the image fits within the circular container */
+  border-radius: 50%;
+  overflow: hidden;
   position: relative;
 }
 
 .profile-picture img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensure the image covers the container without distortion */
+  object-fit: cover;
   display: block;
-  top: 20px;
 }
 
-/* Define the fade-in animation */
 @keyframes fadeInLeft {
   from {
     opacity: 0;
@@ -133,16 +112,14 @@ section {
   }
 }
 
-/* Apply the animation when the section is in view */
 .fade-in-left {
-  opacity: 0; /* Start with opacity 0 */
-  animation: fadeInLeft 1s forwards; /* 1s duration, forwards to retain the final state */
+  opacity: 0;
+  animation: fadeInLeft 1s forwards;
 }
 
 [class$="-content"] {
   opacity: 0;
 }
-
 
 .timeline {
   position: relative;
@@ -175,7 +152,7 @@ section {
   height: 25px;
   right: -17px;
   background-color: white;
-  border: 4px solid #FF9F55;
+  border: 4px solid var(--timeline-accent);
   top: 15px;
   border-radius: 50%;
   z-index: 1;
@@ -206,19 +183,19 @@ form {
 input, textarea {
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: var(--border-radius-form);
 }
 
 button {
   padding: 10px 20px;
-  background-color: #3e5c76;
+  background-color: var(--secondary-color);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: var(--border-radius-form);
   cursor: pointer;
   font-weight: bold;
 }
 
 button:hover {
-  background-color: #253747;
+  background-color: var(--accent-color);
 }
