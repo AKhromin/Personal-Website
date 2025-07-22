@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
 :root {
   --primary-color: #748cab;
   --secondary-color: #3e5c76;
@@ -15,7 +18,7 @@ html {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
   background-color: var(--primary-color);
   color: white;
   margin: 0;
@@ -93,14 +96,9 @@ body {
   color: var(--timeline-accent);
 }
 
-/* Remove old button styles */
-.about, .projects, .education, .skills, .contact {
-  display: none;
-}
-
 section {
   padding: 50px;
-  margin: 50px 0;
+  margin: 20px 0;
   text-align: left;
 }
 
@@ -113,11 +111,14 @@ section {
   background-color: var(--light-background);
 }
 
-/* Section text colors */
-.aboutText, .projectsText, .educationText, .skillsText, .contactText {
-  color: var(--text-color-dark);
-  /* ✅ FIXED: Added margin for consistent spacing below titles */
-  margin-bottom: 40px; 
+#aboutSection h2,
+#projectsSection h2,
+#educationSection h2,
+#skillsSection h2,
+#contactSection h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-color-dark);
+    margin-bottom: 40px;
 }
 
 .about-content {
@@ -133,6 +134,7 @@ section {
   border-radius: 50%;
   overflow: hidden;
   position: relative;
+  flex-shrink: 0;
 }
 
 .profile-picture img {
@@ -158,8 +160,8 @@ section {
   animation: fadeInLeft 1s forwards;
 }
 
-/* ✅ FIXED: Selector is now more specific to avoid affecting modal content */
-section > [class$="-content"] {
+section > [class$="-content"],
+section > [class$="Text"] {
   opacity: 0;
 }
 
@@ -188,11 +190,10 @@ section > [class$="-content"] {
   box-sizing: border-box;
   margin-bottom: 30px;
   cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
 .timeline-item:hover {
-  transform: scale(1.05);
+  /* transform: scale(1.05); */
 }
 
 .timeline-item::after {
@@ -207,7 +208,6 @@ section > [class$="-content"] {
   z-index: 1;
 }
 
-/* Position the circles for left and right items */
 .timeline-item.left::after {
   right: -12px;
 }
@@ -224,7 +224,6 @@ section > [class$="-content"] {
   left: 50%;
 }
 
-/* Add arrows to content boxes */
 .timeline-item .content {
   padding: 20px 30px;
   background-color: white;
@@ -236,10 +235,10 @@ section > [class$="-content"] {
 }
 
 .timeline-item .content:hover {
+  transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Create arrows pointing to timeline */
 .timeline-item.left .content::after {
   content: "";
   position: absolute;
@@ -291,7 +290,6 @@ button:hover {
   background-color: var(--accent-color);
 }
 
-/* Modal styles (Unaffected by the pane view) */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -416,16 +414,13 @@ button:hover {
   outline-offset: 2px;
 }
 
-/* ----- START: NEW STYLES FOR PANE VIEW ----- */
-
 #projectsSection {
   background-color: var(--light-background);
   color: var(--text-color-dark);
+  display: flex;
+  flex-direction: column;
 }
 
-/* ✅ FIXED: Removed the .projects-header rule that was centering the title */
-
-/* ✅ FIXED: Renamed .projects-layout to .projects-content for consistency */
 .projects-content {
   display: flex;
   flex-direction: row;
@@ -440,21 +435,18 @@ button:hover {
 .details-pane {
   flex: 4;
   position: sticky;
-  top: 100px; /* Sticks below the sticky nav bar */
+  top: 100px;
   background-color: white;
   border-radius: 8px;
   padding: 25px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
-  
-  /* Hidden by default */
   opacity: 0;
   transform: translateY(20px);
   visibility: hidden;
 }
 
 .details-pane.is-visible {
-  /* Visible when a project is selected */
   opacity: 1;
   transform: translateY(0);
   visibility: visible;
@@ -499,11 +491,176 @@ button:hover {
   transform: scale(1.03);
 }
 
-/* ----- RESPONSIVE STYLES ----- */
+.more-less-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.more-less-button {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: var(--border-radius-button);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color var(--transition-standard), transform 0.2s;
+}
+
+.more-less-button:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+/* Skills Section */
+.skills-columns {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  gap: 30px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.skill-column {
+  flex: 1;
+  min-width: 280px;
+  padding: 25px;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill-column:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.skill-column h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--secondary-color);
+  border-bottom: 2px solid var(--timeline-accent);
+  padding-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+.skill-column ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skill-column li {
+  margin-bottom: 12px;
+  color: var(--text-color-dark);
+  position: relative;
+  padding-left: 25px;
+  font-size: 1rem;
+}
+
+.skill-column li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  color: var(--timeline-accent);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* ----- START: CORRECTED HORIZONTAL TIMELINE STYLES ----- */
+
+/* Adjust the main container for better spacing without relying on hacks */
+.education-content {
+  opacity: 0; 
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Use flexbox to manage the timeline layout */
+.horizontal-timeline {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start; /* Align items to the top */
+  position: relative;
+  padding-top: 40px; /* Add space for the timeline bar and circles */
+  padding-bottom: 20px;
+  margin-top: 0;
+}
+
+/* The timeline bar can still be positioned absolutely within its relative parent */
+.horizontal-timeline::before {
+  content: '';
+  position: absolute;
+  top: 50px;  /* Position the line vertically */
+  left: 10%;
+  width: 80%;
+  height: 4px;
+  background-color: #e0e0e0;
+  z-index: 0;
+}
+
+/* Each item is a flex child that now correctly contributes to the parent's height */
+.timeline-item-horizontal {
+  position: relative; /* Needed for the circle's positioning */
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  padding-top: 45px; /* Push content down from the circle */
+}
+
+/* The orange circle, positioned relative to the timeline item container */
+.timeline-item-horizontal::after {
+  content: '';
+  position: absolute;
+  /* Adjusted top position to re-center the larger circle on the line */
+  top: -3px; 
+  left: 50%;
+  transform: translateX(-50%);
+  /* Matched width and height to the projects timeline circles */
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border: 4px solid var(--timeline-accent);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* CRITICAL FIX: The content is now in the normal document flow.
+  All absolute positioning has been removed.
+*/
+.timeline-content-horizontal {
+  background-color: white;
+  color: var(--text-color-dark);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 100%; /* Take up the full width of the parent item */
+}
+
+.timeline-dates {
+  font-style: italic;
+  color: var(--secondary-color);
+  margin-top: 5px;
+}
+
+/* ----- END: CORRECTED HORIZONTAL TIMELINE STYLES ----- */
+
+.education-logo {
+  width: 200px; /* Adjust size as needed */
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
 
 @media screen and (max-width: 900px) {
-  /* Pane view responsive adjustments */
-  .projects-content { /* ✅ FIXED: Renamed from .projects-layout */
+  .projects-content {
     flex-direction: column;
   }
   .details-pane {
@@ -515,7 +672,6 @@ button:hover {
 }
 
 @media screen and (max-width: 768px) {
-  /* Original responsive adjustments */
   .timeline::after {
     left: 31px;
   }
@@ -559,5 +715,40 @@ button:hover {
   .profile-picture {
     margin-left: 0;
     margin-bottom: 20px;
+  }
+  
+  .horizontal-timeline {
+    flex-direction: column;
+    align-items: stretch; /* Stretch items to full width */
+    min-height: auto;
+  }
+
+  .horizontal-timeline::before {
+    top: 0;
+    left: 31px; /* Align with vertical timeline */
+    width: 4px;
+    height: 100%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-item-horizontal {
+    width: 100%;
+    margin-bottom: 40px;
+    padding-left: 70px; /* Create space for the line */
+    box-sizing: border-box;
+  }
+
+  .timeline-content-horizontal {
+    position: static; /* Reset positioning */
+    transform: none;
+    width: auto;
+    margin: 0;
+    text-align: left;
+  }
+
+  .timeline-item-horizontal::after {
+    top: 5px; /* Adjust vertical position */
+    left: 31px; /* Align with the vertical line */
+    transform: translateX(-50%);
   }
 }

@@ -20,6 +20,8 @@ function App() {
   const topBarRef = useRef(null);
 
   useEffect(() => {
+    const selector = '[class$="-content"], [class$="Text"]';
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -30,15 +32,25 @@ function App() {
       });
     }, { threshold: 0.1 });
   
-    document.querySelectorAll('[class$="-content"]').forEach(section => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(section => {
       observer.observe(section);
     });
   
     return () => {
-      document.querySelectorAll('[class$="-content"]').forEach(section => {
+      elements.forEach(section => {
         observer.unobserve(section);
       });
     };
+    // document.querySelectorAll('[class$="-content"]').forEach(section => {
+    //   observer.observe(section);
+    // });
+  
+    // return () => {
+    //   document.querySelectorAll('[class$="-content"]').forEach(section => {
+    //     observer.unobserve(section);
+    //   });
+    // };
   }, []);
 
   useEffect(() => {

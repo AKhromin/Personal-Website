@@ -34,6 +34,7 @@ const projectsData = [
 
 const Projects = React.forwardRef((props, ref) => {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleSelectProject = (project) => {
     // If the same project is clicked again, close the pane
@@ -48,16 +49,21 @@ const Projects = React.forwardRef((props, ref) => {
     setSelectedProject(null);
   };
 
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const projectsToShow = isExpanded ? projectsData : projectsData.slice(0, 3);
+
   return (
     <section id="projectsSection" ref={ref}>
       <div className="projectsText">
         <h2>Projects</h2>
       </div>
-      
       <div className="projects-content">
         <div className="timeline-container">
           <div className="timeline">
-            {projectsData.map((project, index) => (
+            {projectsToShow.map((project, index) => (
               <div
                 key={index}
                 className={`timeline-item ${index % 2 === 0 ? 'left' : 'right'}`}
@@ -76,6 +82,13 @@ const Projects = React.forwardRef((props, ref) => {
               </div>
             ))}
           </div>
+          {projectsData.length > 3 && (
+            <div className="more-less-button-container">
+              <button onClick={toggleExpanded} className="more-less-button">
+                {isExpanded ? 'Less' : 'More'}
+              </button>
+            </div>
+          )}
         </div>
         
         <div className={`details-pane ${selectedProject ? 'is-visible' : ''}`}>
