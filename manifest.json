@@ -1,0 +1,8 @@
+{
+  "short_name": "Alexey's Portfolio",
+  "name": "Alexey's Personal Website",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#748cab",
+  "background_color": "#f0ebd8"
+}
