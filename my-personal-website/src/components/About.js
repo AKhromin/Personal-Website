@@ -9,8 +9,10 @@ const About = React.forwardRef((props, ref) => (
         </div>
 
         <div className="aboutMeContent">
-          <p>Hi there! I'm Alexey, a passionate third-year Computer Science student at King's College London with a love for building creative and functional web applications.</p>
-          <p>When I'm not immersed in code, you can find me exploring the vibrant streets of London, hunting for the city's best coffee, or brainstorming my next personal project. I'm driven by curiosity and a desire to learn and grow, both as a developer and as an individual.</p>
+          <p>Hi there! I'm Alexey</p> 
+          <p>I'm a builder at heart who turns complex AI challenges into elegant solutions. With expertise in computer vision, deep learning, and full-stack development, I create software that makes a meaningful difference in financial services. I'm driven by the belief that thoughtful engineering can solve our most pressing problems.</p>
+
+          <p>Currently I am a passionate third-year Computer Science student at King's College London with a love for building creative and functional web applications.</p>
           <p>Feel free to scroll down to learn more about my skills, projects, and experiences!</p>
         </div>
       </div>

@@ -3,50 +3,114 @@ import React, { useState } from 'react';
 
 const projectsData = [
   {
-    title: 'Project Alpha',
-    summary: 'A web application for task management.',
-    description: 'Developed a full-stack web application to help teams manage their projects and tasks efficiently. Features include user authentication, real-time updates, and a responsive design. The application is built with a modern technology stack, ensuring scalability and maintainability. The backend is a RESTful API that handles all the business logic and data persistence. The frontend is a single-page application that provides a rich and interactive user experience. We focused on a clean and intuitive UI to make it easy for users to get started and be productive.',
-    technologies: ['React', 'Node.js', 'Express', 'MongoDB'],
-    imageUrl: `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    title: 'AWS One Day Proof of Concept',
+    summary: 'An AI-powered proof-of-concept generator that transforms business ideas into comprehensive analyses, AWS architecture diagrams, and interactive demos.',
+    description: [
+      'Developed a full-stack web application for AI-driven business concept validation.',
+      'Generates detailed reports: risk assessments, use cases, stakeholder analysis, recommendations, and timelines.',
+      'Features real-time chat for iterative concept refinement and persistent history with user authentication.',
+      'Automates AWS architecture diagram creation for multiple application types (e-commerce, social networks, AR games, etc.).',
+      'Produces interactive HTML/CSS mockups for quick demo visualization.',
+      'Built with React (frontend) and Python backend using fine-tuned LLaMA models for NLP.',
+      'Implements lightweight, local model execution per client requirements for rapid prototyping.'
+    ],
+    technologies: ['React', 'Python', 'Flask', 'LLaMA', 'PlantUML', 'Node.js', 'CSS3', 'HTML5', 'Jest', 'Axios', 'JWT'],
+    imageUrls: [
+      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`,
+      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`,
+      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    ]
   },
   {
-    title: 'Project Beta',
-    summary: 'An e-commerce platform for selling handmade goods.',
-    description: 'Built a secure and scalable e-commerce website with features like product listings, shopping cart, and payment gateway integration. The platform supports multiple vendors and allows them to manage their own inventory and orders. We implemented a secure checkout process using Stripe to handle payments. The user interface is designed to be visually appealing and easy to navigate, providing a seamless shopping experience for customers. The system also includes an admin dashboard for managing products, users, and orders.',
-    technologies: ['React', 'Redux', 'Firebase', 'Stripe'],
-    imageUrl: `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    title: 'Found in Translation',
+    summary: 'A multi-modal translation application with speech-to-text, sign language recognition, and real-time translation capabilities.',
+    description: [
+      'Built a Flutter-based mobile app for accessible, multi-modal translation.',
+      'Supports speech input, sign language recognition, and real-time translation.',
+      'Backend powered by Python Flask, handling AI inference and translation tasks.',
+      'Uses OpenAI Whisper for speech-to-text and Google Translate API for multi-language translation.',
+      'Implements MediaPipe-based computer vision for real-time hand gesture detection and sign language interpretation.',
+      'Offers text-to-speech output for accessible translated audio.',
+      'Real-time audio processing enables spoken input and instant translated audio output.',
+      'Designed for cross-cultural communication and inclusivity, breaking down language barriers.'
+    ],
+    technologies: ['Flutter', 'Python', 'Flask', 'OpenCV', 'MediaPipe', 'OpenAI Whisper', 'Google Translate API', 'Google Text-to-Speech', 'Pygame', 'NumPy', 'Pickle', 'REST API'],
+    imageUrls: [
+      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`,
+      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    ]
   },
   {
-    title: 'Project Gamma',
-    summary: 'A mobile app for tracking fitness goals.',
-    description: 'Designed and developed a cross-platform mobile app that allows users to track their workouts, set goals, and monitor their progress over time. The app features a variety of workout plans and exercises, with video demonstrations for each. Users can log their activities, track their performance metrics, and view their progress through interactive charts and graphs. The app also includes social features, allowing users to connect with friends and share their achievements. It is built using React Native, which allows for a single codebase to be deployed on both iOS and Android.',
-    technologies: ['React Native', 'GraphQL', 'Apollo', 'PostgreSQL'],
-    imageUrl: `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    title: 'Face Detection and Recognition System',
+    summary: 'An advanced deep learning-based face recognition app with real-time detection, identification, and tracking across single and multi-video modes.',
+    description: [
+      'Developed a dual-mode face recognition platform for real-time and batch video analysis.',
+      'Single video mode: interactive Tkinter GUI for known/unknown face recognition, real-time detection overlays, person tracking, and configurable appearance/disappearance detection.',
+      'Multi-video mode: batch processing of multiple videos against a target face image with selective time-range analysis; ideal for surveillance and content review.',
+      'Core system uses OpenCV YuNet for detection and DeepFace with VGG-Face, FaceNet, and ArcFace models for facial embeddings.',
+      'Implements GPU acceleration (CUDA), multi-scale embeddings, and cosine similarity matching with adjustable thresholds.',
+      'Generates detailed CSV logs and visualization reports (appearance frequency charts, duration summaries, face thumbnails).',
+      'Supports MP4, AVI, MOV video formats and PNG, JPG, JPEG image formats; uses frame skipping for performance.',
+      'Modular architecture enables easy integration into other applications or automated workflows.'
+    ],
+    technologies: ['Python', 'OpenCV', 'DeepFace', 'Tkinter', 'NumPy', 'Pandas', 'Matplotlib', 'PIL/Pillow', 'PyTorch', 'SciPy', 'Threading', 'Multiprocessing', 'CUDA', 'YuNet Face Detector', 'VGG-Face', 'FaceNet', 'ArcFace'],
+    imageUrls: [
+      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`,
+      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    ]
   },
   {
-    title: 'Project Delta',
-    summary: 'A data visualization dashboard for analytics.',
-    description: 'Created a powerful data visualization tool that connects to various data sources and provides interactive charts and graphs for business intelligence. The dashboard allows users to explore complex datasets and gain insights through a variety of visualization types, including bar charts, line graphs, and heatmaps. The tool is highly customizable, allowing users to create their own dashboards and reports. It is built with D3.js for powerful and flexible visualizations, and a Python/Flask backend for data processing and API services. The goal was to make data more accessible and understandable for non-technical users.',
-    technologies: ['D3.js', 'React', 'Python', 'Flask'],
-    imageUrl: `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    title: 'Car Make and Model Recognition System',
+    summary: 'A Python-based desktop application that uses deep learning to automatically recognize car makes and models from uploaded images.',
+    description: [
+      'Built a Tkinter-based desktop GUI for easy car image upload, recognition, and results management.',
+      'Core ML engine uses a fine-tuned ResNet-34 CNN (pre-trained on ImageNet, trained on the Stanford Cars Dataset with 196 classes).',
+      'Implements PyTorch-based preprocessing: image resizing (400×400), tensor conversion, and normalization for optimal performance.',
+      'Provides predicted make/model with confidence scores, applying a 70% threshold for reliable identification.',
+      'Supports multiple image formats (JPEG, JPG, PNG, BMP) with validation for quality and resolution.',
+      'Features organized file management, saving recognized images in categorized folders by car make.',
+      'Cleanly separates UI layer, ML backend, training, and inference modules for maintainability.',
+      'Training pipeline supports ResNet-34 fine-tuning with SGD optimization and learning rate scheduling.',
+      'Offers customizable output directories, comprehensive settings menu, and robust error handling.',
+      'Designed to make advanced computer vision accessible for practical car identification tasks.'
+    ],
+    technologies: ['Python', 'Tkinter', 'PyTorch', 'torchvision', 'ResNet-34', 'PIL/Pillow', 'NumPy', 'Pandas', 'Matplotlib', 'OpenCV', 'JSON', 'OS', 'Regex', 'datetime', 'IPython'],
+    imageUrls: [
+      `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic1.jpg`,
+      `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic2.jpg`,
+      `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic3.jpg`
+    ]
   }
 ];
 
 const Projects = React.forwardRef((props, ref) => {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleSelectProject = (project) => {
-    // If the same project is clicked again, close the pane
     if (selectedProject && selectedProject.title === project.title) {
       setSelectedProject(null);
     } else {
       setSelectedProject(project);
+      setCurrentImageIndex(0); // Reset image index when a new project is selected
     }
   };
 
   const closePane = () => {
     setSelectedProject(null);
+  };
+
+  const nextImage = () => {
+    if (selectedProject) {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % selectedProject.imageUrls.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (selectedProject) {
+      setCurrentImageIndex((prevIndex) => (prevIndex - 1 + selectedProject.imageUrls.length) % selectedProject.imageUrls.length);
+    }
   };
 
   const toggleExpanded = () => {
@@ -91,13 +155,35 @@ const Projects = React.forwardRef((props, ref) => {
           )}
         </div>
         
-        <div className={`details-pane ${selectedProject ? 'is-visible' : ''}`}>
+        <div className={`details-pane ${selectedProject ? 'is-visible' : 'is-placeholder'}`}>
           {selectedProject ? (
             <>
               <button onClick={closePane} className="pane-close-button" aria-label="Close project details">&times;</button>
-              <img src={selectedProject.imageUrl} alt={selectedProject.title} className="pane-image" />
+              <div className="image-carousel">
+                {selectedProject.imageUrls.length > 1 && (
+                  <button onClick={prevImage} className="carousel-arrow left">&lt;</button>
+                )}
+                <div className="image-wrapper" style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}>
+                  {selectedProject.imageUrls.map((url, index) => (
+                    <img key={index} src={url} alt={`${selectedProject.title} - screenshot ${index + 1}`} className="pane-image" />
+                  ))}
+                </div>
+                {selectedProject.imageUrls.length > 1 && (
+                  <button onClick={nextImage} className="carousel-arrow right">&gt;</button>
+                )}
+              </div>
               <h2>{selectedProject.title}</h2>
-              <p>{selectedProject.description}</p>
+              <div className="project-description">
+                {Array.isArray(selectedProject.description) ? (
+                  <ul>
+                    {selectedProject.description.map((point, index) => (
+                      <li key={index}>{point}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>{selectedProject.description}</p>
+                )}
+              </div>
               <div className="technologies">
                 {selectedProject.technologies.map((tech, index) => (
                   <span key={index} className="tech-tag">{tech}</span>

@@ -10,10 +10,14 @@ const Skills = React.forwardRef((props, ref) => (
         <div className="skill-column">
           <h3>Languages</h3>
           <ul>
-            <li>JavaScript</li>
             <li>Python</li>
             <li>Java</li>
+            <li>JavaScript</li>
+            <li>R</li>
+            <li>Scala</li>
             <li>C++</li>
+            <li>Haskell</li>
+            <li>Prolog</li>
             <li>HTML/CSS</li>
             <li>SQL</li>
           </ul>
@@ -21,23 +25,30 @@ const Skills = React.forwardRef((props, ref) => (
         <div className="skill-column">
           <h3>Libraries & Frameworks</h3>
           <ul>
-            <li>React</li>
-            <li>Node.js</li>
-            <li>Express</li>
+            <li>PyTorch</li>
+            <li>Scikit-Learn</li>
+            <li>OpenCV & DeepFace</li>
+            <li>MatPlotLib</li>
             <li>NumPy & Pandas</li>
             <li>TensorFlow</li>
-            <li>SCSS</li>
+            <li>React</li>
+            <li>Node.js</li>
+            <li>Flutter</li>
+            <li>Flask</li>
           </ul>
         </div>
         <div className="skill-column">
           <h3>Tools & Platforms</h3>
           <ul>
             <li>Git & GitHub</li>
-            <li>Docker</li>
-            <li>VS Code</li>
-            <li>Jira & Confluence</li>
-            <li>Figma</li>
+            <li>Amazon Web Services (AWS)</li>
             <li>Firebase</li>
+            <li>CUDA</li>
+            <li>Docker</li>
+            <li>Linux/Unix</li>
+            <li>Postman</li>
+            <li>Google Cloud Platform (GCP)</li>
+            <li>Ollama</li>
           </ul>
         </div>
       </div>
