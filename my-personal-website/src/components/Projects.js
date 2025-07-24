@@ -15,10 +15,13 @@ const projectsData = [
       'Implements lightweight, local model execution per client requirements for rapid prototyping.'
     ],
     technologies: ['React', 'Python', 'Flask', 'LLaMA', 'PlantUML', 'Node.js', 'CSS3', 'HTML5', 'Jest', 'Axios', 'JWT'],
-    imageUrls: [
-      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`,
-      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`,
-      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    media: [
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/AWSProject/Pic1.png` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/AWSProject/Pic2.png` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/AWSProject/Pic3.png` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/AWSProject/Pic4.png` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/AWSProject/Pic5.png` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/AWSProject/Pic6.png` },
     ]
   },
   {
@@ -34,10 +37,10 @@ const projectsData = [
       'Real-time audio processing enables spoken input and instant translated audio output.',
       'Designed for cross-cultural communication and inclusivity, breaking down language barriers.'
     ],
-    technologies: ['Flutter', 'Python', 'Flask', 'OpenCV', 'MediaPipe', 'OpenAI Whisper', 'Google Translate API', 'Google Text-to-Speech', 'Pygame', 'NumPy', 'Pickle', 'REST API'],
-    imageUrls: [
-      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`,
-      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    technologies: ['Flutter', 'Python', 'Flask', 'OpenCV', 'MediaPipe', 'OpenAI Whisper', 'Google Translate API', 'Google Text-to-speech', 'Pygame', 'NumPy', 'Pickle', 'REST API'],
+    media: [
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/HandSignProject/Pic1.png` },
+      { type: 'video', url: `${process.env.PUBLIC_URL}/assets/images/HandSignProject/Vid1.mov` }
     ]
   },
   {
@@ -54,9 +57,10 @@ const projectsData = [
       'Modular architecture enables easy integration into other applications or automated workflows.'
     ],
     technologies: ['Python', 'OpenCV', 'DeepFace', 'Tkinter', 'NumPy', 'Pandas', 'Matplotlib', 'PIL/Pillow', 'PyTorch', 'SciPy', 'Threading', 'Multiprocessing', 'CUDA', 'YuNet Face Detector', 'VGG-Face', 'FaceNet', 'ArcFace'],
-    imageUrls: [
-      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`,
-      `${process.env.PUBLIC_URL}/assets/images/CityRoad.jpg`
+    media: [
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/FaceRecProject/Pic1.png` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/FaceRecProject/Pic2.png` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/FaceRecProject/Pic3.png` }
     ]
   },
   {
@@ -75,17 +79,17 @@ const projectsData = [
       'Designed to make advanced computer vision accessible for practical car identification tasks.'
     ],
     technologies: ['Python', 'Tkinter', 'PyTorch', 'torchvision', 'ResNet-34', 'PIL/Pillow', 'NumPy', 'Pandas', 'Matplotlib', 'OpenCV', 'JSON', 'OS', 'Regex', 'datetime', 'IPython'],
-    imageUrls: [
-      `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic1.jpg`,
-      `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic2.jpg`,
-      `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic3.jpg`
+    media: [
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic1.jpg` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic2.jpg` },
+      { type: 'image', url: `${process.env.PUBLIC_URL}/assets/images/CarProject/Pic3.jpg` }
     ]
   }
 ];
 
 const Projects = React.forwardRef((props, ref) => {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleSelectProject = (project) => {
@@ -93,7 +97,7 @@ const Projects = React.forwardRef((props, ref) => {
       setSelectedProject(null);
     } else {
       setSelectedProject(project);
-      setCurrentImageIndex(0); // Reset image index when a new project is selected
+      setCurrentItemIndex(0); // Reset item index when a new project is selected
     }
   };
 
@@ -101,15 +105,15 @@ const Projects = React.forwardRef((props, ref) => {
     setSelectedProject(null);
   };
 
-  const nextImage = () => {
+  const nextItem = () => {
     if (selectedProject) {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % selectedProject.imageUrls.length);
+      setCurrentItemIndex((prevIndex) => (prevIndex + 1) % selectedProject.media.length);
     }
   };
 
-  const prevImage = () => {
+  const prevItem = () => {
     if (selectedProject) {
-      setCurrentImageIndex((prevIndex) => (prevIndex - 1 + selectedProject.imageUrls.length) % selectedProject.imageUrls.length);
+      setCurrentItemIndex((prevIndex) => (prevIndex - 1 + selectedProject.media.length) % selectedProject.media.length);
     }
   };
 
@@ -159,17 +163,25 @@ const Projects = React.forwardRef((props, ref) => {
           {selectedProject ? (
             <>
               <button onClick={closePane} className="pane-close-button" aria-label="Close project details">&times;</button>
-              <div className="image-carousel">
-                {selectedProject.imageUrls.length > 1 && (
-                  <button onClick={prevImage} className="carousel-arrow left">&lt;</button>
+              <div className="media-carousel">
+                {selectedProject.media.length > 1 && (
+                  <button onClick={prevItem} className="carousel-arrow left">&lt;</button>
                 )}
-                <div className="image-wrapper" style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}>
-                  {selectedProject.imageUrls.map((url, index) => (
-                    <img key={index} src={url} alt={`${selectedProject.title} - screenshot ${index + 1}`} className="pane-image" />
+                <div className="media-wrapper" style={{ transform: `translateX(-${currentItemIndex * 100}%)` }}>
+                  {selectedProject.media.map((item, index) => (
+                    <div key={index} className="media-item">
+                      {item.type === 'image' ? (
+                        <img src={item.url} alt={`${selectedProject.title} - media ${index + 1}`} className="pane-image" />
+                      ) : (
+                        <video src={item.url} controls className="pane-video">
+                          Your browser does not support the video tag.
+                        </video>
+                      )}
+                    </div>
                   ))}
                 </div>
-                {selectedProject.imageUrls.length > 1 && (
-                  <button onClick={nextImage} className="carousel-arrow right">&gt;</button>
+                {selectedProject.media.length > 1 && (
+                  <button onClick={nextItem} className="carousel-arrow right">&gt;</button>
                 )}
               </div>
               <h2>{selectedProject.title}</h2>

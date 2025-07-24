@@ -524,23 +524,37 @@ button:hover {
 .pane-image {
   width: 100%;
   height: 350px; /* Increased height */
-  object-fit: cover;
+  object-fit: contain; /* Changed from 'cover' to 'contain' */
   border-radius: 4px;
   margin-bottom: 20px;
   flex-shrink: 0; /* Prevent images from shrinking in the flex container */
   transition: opacity 0.3s ease-in-out;
+  background-color: #f0f0f0; /* Added a light background for letterboxing */
 }
 
-.image-carousel {
+.media-carousel {
   position: relative;
   overflow: hidden;
   border-radius: 4px;
   margin-bottom: 20px;
 }
 
-.image-wrapper {
+.media-wrapper {
   display: flex;
-  transition: transform 0.5s ease-in-out; /* Sliding animation */
+  transition: transform 0.5s ease-in-out;
+}
+
+.media-item {
+  flex: 0 0 100%;
+  width: 100%;
+}
+
+.pane-image, .pane-video {
+  width: 100%;
+  height: 350px;
+  object-fit: contain;
+  border-radius: 4px;
+  background-color: #f0f0f0;
 }
 
 .carousel-arrow {
@@ -802,6 +816,7 @@ button:hover {
   }
 }
 
+
 @media screen and (max-width: 768px) {
   .timeline::after {
     left: 31px;
@@ -882,4 +897,12 @@ button:hover {
     left: 31px; /* Align with the vertical line */
     transform: translateX(-50%);
   }
+}
+
+
+.pane-video {
+  width: 100%;
+  max-height: 300px; /* Or any other appropriate value */
+  object-fit: contain;
+  margin-bottom: 1rem;
 }
