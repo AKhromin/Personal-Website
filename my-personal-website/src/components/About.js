@@ -12,7 +12,8 @@ const About = React.forwardRef((props, ref) => (
           <p>Hi there! I'm Alexey</p> 
           <p>I'm a builder at heart who turns complex AI challenges into elegant solutions. With expertise in computer vision, deep learning, and full-stack development, I create software that makes a meaningful difference in financial services. I'm driven by the belief that thoughtful engineering can solve our most pressing problems.</p>
 
-          <p>Currently I am a passionate third-year Computer Science student at King's College London with a love for building creative and functional web applications.</p>
+          <p>Currently I am a passionate third-year Computer Science student at King's College London specializing in AI-driven software engineering and data analysis.</p>
+          <p>With expertise in deep learning, computer vision, and full-stack development, I create software that makes a meaningful difference in various domains.</p>
           <p>Feel free to scroll down to learn more about my skills, projects, and experiences!</p>
         </div>
       </div>
