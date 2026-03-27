@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useRef } from 'react';
 import CodeIcon from '@mui/icons-material/Code';
 import SchoolIcon from '@mui/icons-material/School';
+import TerminalIcon from '@mui/icons-material/Terminal';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useDesktop } from '../context/DesktopContext';
 
 /* ---- CSS-based file icon (rectangle with folded corner + extension label) ---- */
@@ -60,6 +62,24 @@ const icons = [
     label: 'contact.exe',
     render: () => <FileIcon extension="EXE" color="#b05c3a" />,
     defaultGrid: { col: 0, row: 4 },
+  },
+  {
+    id: 'terminal',
+    label: 'terminal.sh',
+    render: () => <FileIcon extension="SH" color="#3a3a3a" />,
+    defaultGrid: { col: 0, row: 5 },
+  },
+  {
+    id: 'snake',
+    label: 'snake.game',
+    render: () => <FileIcon extension="GAME" color="#2d8a4e" />,
+    defaultGrid: { col: 1, row: 0 },
+  },
+  {
+    id: 'minesweeper',
+    label: 'minesweeper.game',
+    render: () => <FileIcon extension="GAME" color="#6a4c93" />,
+    defaultGrid: { col: 1, row: 1 },
   },
 ];
 

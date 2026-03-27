@@ -7,6 +7,9 @@ const WINDOW_DEFAULTS = {
   skills:        { x: 240, y: 45,  w: 750, h: 520, minW: 400, minH: 350 },
   contact:       { x: 280, y: 55,  w: 500, h: 440, minW: 360, minH: 320 },
   aboutPC:       { x: 200, y: 80,  w: 420, h: 360, minW: 320, minH: 280 },
+  terminal:      { x: 180, y: 50,  w: 680, h: 480, minW: 420, minH: 320 },
+  snake:         { x: 220, y: 40,  w: 460, h: 540, minW: 440, minH: 520 },
+  minesweeper:   { x: 260, y: 50,  w: 380, h: 480, minW: 340, minH: 440 },
 };
 
 const PROJECT_WINDOW_DEFAULTS = { w: 800, h: 600, minW: 500, minH: 400 };
@@ -18,6 +21,9 @@ const WINDOW_TITLES = {
   skills: 'skills.json',
   contact: 'contact.exe',
   aboutPC: 'About this PC',
+  terminal: 'terminal.sh',
+  snake: 'snake.game',
+  minesweeper: 'minesweeper.game',
 };
 
 function makeWindowState(defaults) {

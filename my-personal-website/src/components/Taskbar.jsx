@@ -4,6 +4,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import TerminalIcon from '@mui/icons-material/Terminal';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
@@ -21,6 +22,9 @@ const ICON_MAP = {
   education: FolderIcon,
   skills: DataObjectIcon,
   contact: TerminalIcon,
+  terminal: TerminalIcon,
+  snake: SportsEsportsIcon,
+  minesweeper: SportsEsportsIcon,
 };
 
 function getIcon(id) {
@@ -30,7 +34,7 @@ function getIcon(id) {
 }
 
 /* ---- Background Music Player ---- */
-const MUSIC_URL = 'https://cdn.pixabay.com/audio/2024/11/28/audio_3e57e7a1f1.mp3';
+const MUSIC_URL = `${import.meta.env.BASE_URL}assets/audio/lofi-background.mp3`;
 
 function useMusicPlayer() {
   const audioRef = useRef(null);
@@ -99,6 +103,10 @@ function StartMenu({ onClose, openWindow }) {
     { icon: SchoolIcon, label: 'Education', action: () => { openWindow('education'); onClose(); } },
     { icon: DataObjectIcon, label: 'Skills', action: () => { openWindow('skills'); onClose(); } },
     { icon: EmailIcon, label: 'Contact', action: () => { openWindow('contact'); onClose(); } },
+    'divider',
+    { icon: TerminalIcon, label: 'Terminal', action: () => { openWindow('terminal'); onClose(); } },
+    { icon: SportsEsportsIcon, label: 'Snake', action: () => { openWindow('snake'); onClose(); } },
+    { icon: SportsEsportsIcon, label: 'Minesweeper', action: () => { openWindow('minesweeper'); onClose(); } },
     'divider',
     { icon: GitHubIcon, label: 'GitHub', action: () => { window.open('https://github.com/AKhromin', '_blank'); onClose(); } },
     { icon: LinkedInIcon, label: 'LinkedIn', action: () => { window.open('https://www.linkedin.com/in/alexey-khromin', '_blank'); onClose(); } },

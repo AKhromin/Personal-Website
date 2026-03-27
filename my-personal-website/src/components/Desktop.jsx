@@ -8,6 +8,9 @@ import ProjectDetail from './ProjectDetail';
 import Education from './Education';
 import Skills from './Skills';
 import Contact from './Contact';
+import Terminal from './Terminal';
+import SnakeGame from './SnakeGame';
+import MinesweeperGame from './MinesweeperGame';
 import { useDesktop } from '../context/DesktopContext';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import WallpaperIcon from '@mui/icons-material/Wallpaper';
@@ -107,6 +110,9 @@ function Desktop() {
       <Window id="education"><Education /></Window>
       <Window id="skills"><Skills /></Window>
       <Window id="contact"><Contact /></Window>
+      <Window id="terminal"><Terminal /></Window>
+      <Window id="snake"><SnakeGame /></Window>
+      <Window id="minesweeper"><MinesweeperGame /></Window>
 
       <Taskbar />
 
