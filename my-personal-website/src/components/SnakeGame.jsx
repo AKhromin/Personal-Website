@@ -25,6 +25,10 @@ function randomFood(snake) {
   return pos;
 }
 
+function isTouchDevice() {
+  return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+}
+
 function SnakeGame() {
   const canvasRef = useRef(null);
   const gameLoopRef = useRef(null);
@@ -33,22 +37,22 @@ function SnakeGame() {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [gameState, setGameState] = useState('ready'); // ready | playing | paused | over
+  const [showTouch] = useState(() => isTouchDevice());
   const snakeRef = useRef([
     { x: 5, y: 10 },
     { x: 4, y: 10 },
     { x: 3, y: 10 },
   ]);
   const foodRef = useRef(randomFood(snakeRef.current));
+  const touchStartRef = useRef(null);
 
   const draw = useCallback(() => {
     const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
 
-    // Background
     ctx.fillStyle = '#0a0a0a';
     ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-    // Grid lines (subtle)
     ctx.strokeStyle = 'rgba(255,255,255,0.03)';
     ctx.lineWidth = 0.5;
     for (let x = 0; x <= GRID_W; x++) {
@@ -64,7 +68,6 @@ function SnakeGame() {
       ctx.stroke();
     }
 
-    // Food
     const food = foodRef.current;
     ctx.fillStyle = '#ff6b6b';
     ctx.shadowColor = '#ff6b6b';
@@ -80,7 +83,6 @@ function SnakeGame() {
     ctx.fill();
     ctx.shadowBlur = 0;
 
-    // Snake
     const snake = snakeRef.current;
     snake.forEach((seg, i) => {
       const isHead = i === 0;
@@ -113,14 +115,12 @@ function SnakeGame() {
     const dir = dirRef.current;
     const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
-    // Wall collision
     if (head.x < 0 || head.x >= GRID_W || head.y < 0 || head.y >= GRID_H) {
       setGameState('over');
       setHighScore((prev) => Math.max(prev, score));
       return;
     }
 
-    // Self collision
     if (snake.some((s) => s.x === head.x && s.y === head.y)) {
       setGameState('over');
       setHighScore((prev) => Math.max(prev, score));
@@ -129,7 +129,6 @@ function SnakeGame() {
 
     snake.unshift(head);
 
-    // Food collision
     const food = foodRef.current;
     if (head.x === food.x && head.y === food.y) {
       setScore((prev) => prev + 10);
@@ -142,7 +141,6 @@ function SnakeGame() {
     draw();
   }, [draw, score]);
 
-  // Game loop
   useEffect(() => {
     if (gameState === 'playing') {
       gameLoopRef.current = setInterval(tick, INITIAL_SPEED);
@@ -150,7 +148,6 @@ function SnakeGame() {
     return () => clearInterval(gameLoopRef.current);
   }, [gameState, tick]);
 
-  // Initial draw
   useEffect(() => {
     draw();
   }, [draw]);
@@ -168,6 +165,14 @@ function SnakeGame() {
     setGameState('playing');
     draw();
   }, [draw]);
+
+  const changeDirection = useCallback((dirKey) => {
+    const newDir = DIRECTIONS[dirKey];
+    if (!newDir) return;
+    const cur = dirRef.current;
+    if (newDir.x + cur.x === 0 && newDir.y + cur.y === 0) return;
+    nextDirRef.current = newDir;
+  }, []);
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -190,14 +195,48 @@ function SnakeGame() {
       e.preventDefault();
 
       if (gameState === 'ready') setGameState('playing');
-
-      // Prevent reversing
-      const cur = dirRef.current;
-      if (newDir.x + cur.x === 0 && newDir.y + cur.y === 0) return;
-      nextDirRef.current = newDir;
+      changeDirection(e.key);
     },
-    [gameState, resetGame]
+    [gameState, resetGame, changeDirection]
   );
+
+  // Touch D-pad button handler
+  const handleDpad = useCallback((dirKey) => {
+    if (gameState === 'ready') setGameState('playing');
+    changeDirection(dirKey);
+  }, [gameState, changeDirection]);
+
+  const handlePlayPause = useCallback(() => {
+    if (gameState === 'ready') setGameState('playing');
+    else if (gameState === 'playing') setGameState('paused');
+    else if (gameState === 'paused') setGameState('playing');
+    else if (gameState === 'over') resetGame();
+  }, [gameState, resetGame]);
+
+  // Swipe detection on the canvas
+  const handleTouchStart = useCallback((e) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }, []);
+
+  const handleTouchEnd = useCallback((e) => {
+    if (!touchStartRef.current) return;
+    const touch = e.changedTouches[0];
+    const dx = touch.clientX - touchStartRef.current.x;
+    const dy = touch.clientY - touchStartRef.current.y;
+    const minSwipe = 30;
+
+    if (Math.abs(dx) < minSwipe && Math.abs(dy) < minSwipe) return;
+
+    if (gameState === 'ready') setGameState('playing');
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      changeDirection(dx > 0 ? 'ArrowRight' : 'ArrowLeft');
+    } else {
+      changeDirection(dy > 0 ? 'ArrowDown' : 'ArrowUp');
+    }
+    touchStartRef.current = null;
+  }, [gameState, changeDirection]);
 
   return (
     <div
@@ -210,7 +249,11 @@ function SnakeGame() {
         <span className="snake-score">Score: {score}</span>
         <span className="snake-high-score">Best: {highScore}</span>
       </div>
-      <div className="snake-canvas-wrapper">
+      <div
+        className="snake-canvas-wrapper"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <canvas
           ref={canvasRef}
           width={CANVAS_W}
@@ -220,16 +263,26 @@ function SnakeGame() {
         {gameState === 'ready' && (
           <div className="snake-overlay">
             <div className="snake-overlay-text">
-              <span className="snake-title">🐍 Snake</span>
-              <span>Press Space or arrow key to start</span>
+              <span className="snake-title">Snake</span>
+              <span>{showTouch ? 'Tap Play or swipe to start' : 'Press Space or arrow key to start'}</span>
+              {showTouch && (
+                <button className="snake-restart-btn" onClick={handlePlayPause}>
+                  Play
+                </button>
+              )}
             </div>
           </div>
         )}
         {gameState === 'paused' && (
           <div className="snake-overlay">
             <div className="snake-overlay-text">
-              <span className="snake-title">⏸ Paused</span>
-              <span>Press Space to resume</span>
+              <span className="snake-title">Paused</span>
+              <span>{showTouch ? 'Tap Resume to continue' : 'Press Space to resume'}</span>
+              {showTouch && (
+                <button className="snake-restart-btn" onClick={handlePlayPause}>
+                  Resume
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -245,9 +298,50 @@ function SnakeGame() {
           </div>
         )}
       </div>
+
+      {/* Touch D-pad controls */}
+      {showTouch && (
+        <div className="snake-touch-controls">
+          <div className="snake-dpad">
+            <button
+              className="snake-dpad-btn snake-dpad-up"
+              onTouchStart={(e) => { e.preventDefault(); handleDpad('ArrowUp'); }}
+            >
+              ▲
+            </button>
+            <div className="snake-dpad-row">
+              <button
+                className="snake-dpad-btn snake-dpad-left"
+                onTouchStart={(e) => { e.preventDefault(); handleDpad('ArrowLeft'); }}
+              >
+                ◀
+              </button>
+              <button
+                className="snake-dpad-btn snake-dpad-center"
+                onTouchStart={(e) => { e.preventDefault(); handlePlayPause(); }}
+              >
+                {gameState === 'playing' ? '⏸' : '▶'}
+              </button>
+              <button
+                className="snake-dpad-btn snake-dpad-right"
+                onTouchStart={(e) => { e.preventDefault(); handleDpad('ArrowRight'); }}
+              >
+                ▶
+              </button>
+            </div>
+            <button
+              className="snake-dpad-btn snake-dpad-down"
+              onTouchStart={(e) => { e.preventDefault(); handleDpad('ArrowDown'); }}
+            >
+              ▼
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="snake-footer">
-        <span>Arrow Keys: Move</span>
-        <span>Space: Pause</span>
+        <span>{showTouch ? 'Swipe or use D-pad' : 'Arrow Keys: Move'}</span>
+        <span>{showTouch ? 'Center: Pause' : 'Space: Pause'}</span>
       </div>
     </div>
   );

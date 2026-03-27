@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import MobileAppIcon from './mobile/MobileAppIcon';
 import MobilePageView from './mobile/MobilePageView';
 import About from './About';
-import Projects from './Projects';
 import ProjectDetail from './ProjectDetail';
 import Education from './Education';
 import Skills from './Skills';
@@ -10,6 +9,7 @@ import Contact from './Contact';
 import SnakeGame from './SnakeGame';
 import MinesweeperGame from './MinesweeperGame';
 import Terminal from './Terminal';
+import projectsData from '../data/projectsData';
 import PersonIcon from '@mui/icons-material/Person';
 import FolderIcon from '@mui/icons-material/Folder';
 import SchoolIcon from '@mui/icons-material/School';
@@ -36,8 +36,8 @@ const APPS = [
   { id: 'linkedin', label: 'LinkedIn', icon: LinkedInIcon, color: '#0077b5' },
 ];
 
-/* ---- Top Bar ---- */
-function TabletTopBar({ isPlaying, onToggleMusic }) {
+/* ---- Status bar (reused cosmetic) ---- */
+function TabletStatusBar() {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -46,71 +46,35 @@ function TabletTopBar({ isPlaying, onToggleMusic }) {
   }, []);
 
   return (
-    <div className="tablet-top-bar">
-      <span className="tablet-top-name">Alexey Khromin — Portfolio OS</span>
-      <div className="tablet-top-right">
-        <button
-          className={`tablet-music-btn ${isPlaying ? 'active' : ''}`}
-          onClick={onToggleMusic}
-        >
-          <MusicNoteIcon sx={{ fontSize: 18 }} />
-        </button>
-        <span className="tablet-top-clock">
-          {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </span>
-      </div>
+    <div className="mobile-status-bar">
+      <span className="mobile-status-time">
+        {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+      </span>
+      <span className="mobile-status-right">
+        <span className="mobile-signal">●●●○</span>
+        <span className="mobile-battery">🔋</span>
+      </span>
     </div>
   );
 }
 
-
-/* ---- Tablet Projects ---- */
+/* ---- Tablet Projects (uses full shared data) ---- */
 function TabletProjects({ onOpenProject }) {
-  const projectsData = [
-    {
-      title: 'AWS One Day Proof of Concept',
-      filename: 'aws_poc.proj',
-      summary: 'An AI-powered proof-of-concept generator that transforms business ideas into comprehensive analyses.',
-      technologies: ['React', 'Python', 'Flask', 'LLaMA'],
-      media: [{ type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AWSProject/Pic1.png` }],
-      description: ['Developed a full-stack web application for AI-driven business concept validation.'],
-    },
-    {
-      title: 'Found in Translation',
-      filename: 'translation_app.proj',
-      summary: 'A multi-modal translation app with speech-to-text, sign language recognition, and real-time translation.',
-      technologies: ['Flutter', 'Python', 'OpenCV', 'MediaPipe'],
-      media: [{ type: 'image', url: `${import.meta.env.BASE_URL}assets/images/HandSignProject/Pic1.png` }],
-      description: ['Built a Flutter-based mobile app for accessible, multi-modal translation.'],
-    },
-    {
-      title: 'Face Detection and Recognition',
-      filename: 'face_recognition.proj',
-      summary: 'An advanced deep learning-based face recognition app with real-time detection.',
-      technologies: ['Python', 'OpenCV', 'DeepFace', 'PyTorch'],
-      media: [{ type: 'image', url: `${import.meta.env.BASE_URL}assets/images/FaceRecProject/Pic1.png` }],
-      description: ['Developed a dual-mode face recognition platform for real-time and batch video analysis.'],
-    },
-    {
-      title: 'Car Make & Model Recognition',
-      filename: 'car_recognition.proj',
-      summary: 'A Python-based desktop app using deep learning to recognize car makes and models.',
-      technologies: ['Python', 'PyTorch', 'ResNet-34'],
-      media: [{ type: 'image', url: `${import.meta.env.BASE_URL}assets/images/CarProject/Pic1.jpg` }],
-      description: ['Built a Tkinter-based desktop GUI for car image upload and recognition.'],
-    },
-  ];
-
   return (
-    <div className="tablet-projects-grid">
+    <div className="mobile-projects-list">
       {projectsData.map((project, i) => (
-        <button key={i} className="tablet-project-card" onClick={() => onOpenProject(project)}>
-          <div className="tablet-project-thumb">
+        <button key={i} className="mobile-project-card" onClick={() => onOpenProject(project)}>
+          <div className="mobile-project-thumb">
             {project.media[0] && <img src={project.media[0].url} alt={project.title} />}
           </div>
-          <div className="tablet-project-info">
+          <div className="mobile-project-info">
             <h3>{project.title}</h3>
             <p>{project.summary}</p>
+            <div className="mobile-project-tags">
+              {project.technologies.slice(0, 4).map((t, j) => (
+                <span key={j} className="mobile-tag">{t}</span>
+              ))}
+            </div>
           </div>
         </button>
       ))}
@@ -118,7 +82,7 @@ function TabletProjects({ onOpenProject }) {
   );
 }
 
-/* ---- Main Tablet Layout ---- */
+/* ---- Main Tablet Layout (full-screen pages like mobile) ---- */
 function TabletLayout() {
   const [activePage, setActivePage] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
@@ -173,13 +137,16 @@ function TabletLayout() {
     minesweeper: 'Minesweeper',
   };
 
-  // Render active page as modal overlay
-  const renderModal = () => {
-    if (!activePage && !activeProject) return null;
+  const renderPageContent = () => {
+    if (activeProject) {
+      return (
+        <MobilePageView title={activeProject.title} onBack={goBack}>
+          <ProjectDetail project={activeProject} />
+        </MobilePageView>
+      );
+    }
 
-    const title = activeProject
-      ? activeProject.title
-      : PAGE_TITLES[activePage] || activePage;
+    const title = PAGE_TITLES[activePage] || activePage;
 
     const contentMap = {
       about: <About />,
@@ -193,38 +160,38 @@ function TabletLayout() {
     };
 
     return (
-      <div className="tablet-modal-overlay" onClick={goBack}>
-        <div className="tablet-modal" onClick={(e) => e.stopPropagation()}>
-          <MobilePageView title={title} onBack={goBack}>
-            {activeProject
-              ? <ProjectDetail project={activeProject} />
-              : contentMap[activePage] || <p>Page not found</p>
-            }
-          </MobilePageView>
-        </div>
-      </div>
+      <MobilePageView title={title} onBack={goBack}>
+        {contentMap[activePage] || <p>Page not found</p>}
+      </MobilePageView>
     );
   };
 
-  return (
-    <div className="tablet-layout">
-      <TabletTopBar isPlaying={isPlaying} onToggleMusic={toggleMusic} />
+  // Full-screen page view (like mobile)
+  if (activePage || activeProject) {
+    return (
+      <div className="mobile-layout tablet-mode">
+        <TabletStatusBar />
+        {renderPageContent()}
+      </div>
+    );
+  }
 
-      <div className="tablet-home">
-        <div className="tablet-header">
-          <div className="tablet-profile-pic">
+  return (
+    <div className="mobile-layout tablet-mode">
+      <TabletStatusBar />
+      <div className="mobile-home">
+        <div className="mobile-header">
+          <div className="mobile-profile-pic">
             <img
               src={`${import.meta.env.BASE_URL}assets/images/ProfilePicture.jpg`}
               alt="Alexey"
             />
           </div>
-          <div className="tablet-header-text">
-            <h1>Alexey Khromin</h1>
-            <p>CS Student & Developer — Portfolio OS</p>
-          </div>
+          <h1 className="mobile-name">Alexey Khromin</h1>
+          <p className="mobile-tagline">CS Student & Developer</p>
         </div>
 
-        <div className="tablet-app-grid">
+        <div className="mobile-app-grid tablet-app-grid">
           {APPS.map((app) => (
             <MobileAppIcon
               key={app.id}
@@ -242,9 +209,6 @@ function TabletLayout() {
           />
         </div>
       </div>
-
-
-      {renderModal()}
     </div>
   );
 }

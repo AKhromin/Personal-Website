@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
 function ProjectDetail({ project }) {
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  const touchStartRef = useRef(null);
 
   if (!project) {
     return <div className="readme-empty">No project selected.</div>;
@@ -9,6 +10,21 @@ function ProjectDetail({ project }) {
 
   const nextItem = () => setCurrentItemIndex((i) => (i + 1) % project.media.length);
   const prevItem = () => setCurrentItemIndex((i) => (i - 1 + project.media.length) % project.media.length);
+
+  const handleTouchStart = (e) => {
+    touchStartRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartRef.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartRef.current;
+    const minSwipe = 50;
+    if (Math.abs(dx) >= minSwipe) {
+      if (dx < 0) nextItem();
+      else prevItem();
+    }
+    touchStartRef.current = null;
+  };
 
   // Split description: first 2 items are the overview, rest are details
   const overview = project.description.slice(0, 2);
@@ -34,7 +50,11 @@ function ProjectDetail({ project }) {
       {/* Screenshots section */}
       <h2 className="readme-section-title">Screenshots</h2>
       <div className="readme-media">
-        <div className="media-carousel">
+        <div
+          className="media-carousel"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           {project.media.length > 1 && (
             <button onClick={prevItem} className="carousel-arrow left">&lt;</button>
           )}
@@ -81,12 +101,16 @@ function ProjectDetail({ project }) {
       </div>
 
       {/* Features */}
-      <h2 className="readme-section-title">Features</h2>
-      <ul className="readme-list">
-        {details.map((point, i) => (
-          <li key={i}>{point}</li>
-        ))}
-      </ul>
+      {details.length > 0 && (
+        <>
+          <h2 className="readme-section-title">Features</h2>
+          <ul className="readme-list">
+            {details.map((point, i) => (
+              <li key={i}>{point}</li>
+            ))}
+          </ul>
+        </>
+      )}
 
       {/* Tech stack */}
       <hr className="readme-divider" />
