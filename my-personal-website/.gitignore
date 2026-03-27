@@ -10,6 +10,10 @@
 
 # production
 /build
+/dist
+
+# AI assistant configs
+.claude/
 
 # misc
 .DS_Store
