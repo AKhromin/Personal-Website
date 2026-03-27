@@ -909,7 +909,6 @@ body {
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
   font-size: 0.85rem;
   line-height: 1.7;
-  position: relative;
 }
 
 .json-toolbar {
@@ -932,39 +931,37 @@ body {
   font-size: 0.75rem;
 }
 
-.json-viewer pre {
-  margin: 0;
-  padding: 16px 16px 16px 56px;
-  overflow-x: auto;
-  background: transparent;
-}
-
-.json-viewer code {
-  color: #cdd6f4;
-  white-space: pre;
-}
-
-.json-line-numbers {
-  position: absolute;
-  left: 0;
-  top: 45px;
+.json-body {
   padding: 16px 0;
-  width: 44px;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  user-select: none;
-  pointer-events: none;
-  background: #181825;
-  border-right: 1px solid #313244;
+  overflow-x: auto;
 }
 
-.json-line-numbers span {
+.json-line {
+  display: flex;
+  align-items: stretch;
+  min-height: 1.7em;
+}
+
+.json-line-num {
+  width: 44px;
+  min-width: 44px;
+  text-align: right;
+  padding-right: 10px;
   color: #45475a;
   font-size: 0.75rem;
   line-height: 1.7;
-  padding-right: 10px;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  user-select: none;
+  background: #181825;
+  border-right: 1px solid #313244;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.json-line-content {
+  padding-left: 12px;
+  color: #cdd6f4;
+  white-space: pre;
+  line-height: 1.7;
 }
 
 .json-key {
