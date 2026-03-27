@@ -264,6 +264,27 @@ export function DesktopProvider({ children }) {
 
 export function useDesktop() {
   const ctx = useContext(DesktopContext);
-  if (!ctx) throw new Error('useDesktop must be used within DesktopProvider');
+  if (!ctx) {
+    // Safe fallback for components used outside DesktopProvider (mobile/tablet)
+    return {
+      windows: {},
+      windowTitles: {},
+      projectWindows: {},
+      snapPreview: null,
+      openWindow: () => {},
+      closeWindow: () => {},
+      minimizeWindow: () => {},
+      focusWindow: () => {},
+      openProject: () => {},
+      setSnapPreview: () => {},
+      startDrag: () => {},
+      updateDrag: () => {},
+      endDrag: () => {},
+      startResize: () => {},
+      updateResize: () => {},
+      endResize: () => {},
+      toggleMaximize: () => {},
+    };
+  }
   return ctx;
 }
