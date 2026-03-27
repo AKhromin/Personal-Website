@@ -20,6 +20,8 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewListIcon from '@mui/icons-material/ViewList';
 
 const MUSIC_URL = `${import.meta.env.BASE_URL}assets/audio/lofi-background.mp3`;
 
@@ -58,7 +60,7 @@ function TabletStatusBar() {
   );
 }
 
-/* ---- Tablet Projects (uses full shared data) ---- */
+/* ---- Tablet Projects (uses full shared data, .proj naming) ---- */
 function TabletProjects({ onOpenProject }) {
   return (
     <div className="mobile-projects-list">
@@ -68,7 +70,7 @@ function TabletProjects({ onOpenProject }) {
             {project.media[0] && <img src={project.media[0].url} alt={project.title} />}
           </div>
           <div className="mobile-project-info">
-            <h3>{project.title}</h3>
+            <h3>{project.filename}</h3>
             <p>{project.summary}</p>
             <div className="mobile-project-tags">
               {project.technologies.slice(0, 4).map((t, j) => (
@@ -87,6 +89,7 @@ function TabletLayout() {
   const [activePage, setActivePage] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [viewMode, setViewMode] = useState('grid');
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -140,7 +143,7 @@ function TabletLayout() {
   const renderPageContent = () => {
     if (activeProject) {
       return (
-        <MobilePageView title={activeProject.title} onBack={goBack}>
+        <MobilePageView title={activeProject.filename} onBack={goBack}>
           <ProjectDetail project={activeProject} />
         </MobilePageView>
       );
@@ -176,6 +179,16 @@ function TabletLayout() {
     );
   }
 
+  const allApps = [
+    ...APPS,
+    {
+      id: 'music',
+      label: isPlaying ? 'Pause' : 'Music',
+      icon: MusicNoteIcon,
+      color: isPlaying ? '#50fa7b' : '#555',
+    },
+  ];
+
   return (
     <div className="mobile-layout tablet-mode">
       <TabletStatusBar />
@@ -191,23 +204,54 @@ function TabletLayout() {
           <p className="mobile-tagline">CS Student & Developer</p>
         </div>
 
-        <div className="mobile-app-grid tablet-app-grid">
-          {APPS.map((app) => (
-            <MobileAppIcon
-              key={app.id}
-              icon={app.icon}
-              label={app.label}
-              color={app.color}
-              onClick={() => openApp(app.id)}
-            />
-          ))}
-          <MobileAppIcon
-            icon={MusicNoteIcon}
-            label={isPlaying ? 'Pause' : 'Music'}
-            color={isPlaying ? '#50fa7b' : '#555'}
-            onClick={toggleMusic}
-          />
+        {/* View mode toggle */}
+        <div className="mobile-view-toggle">
+          <button
+            className={`mobile-view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+            onClick={() => setViewMode('grid')}
+          >
+            <ViewModuleIcon sx={{ fontSize: 18 }} />
+          </button>
+          <button
+            className={`mobile-view-btn ${viewMode === 'list' ? 'active' : ''}`}
+            onClick={() => setViewMode('list')}
+          >
+            <ViewListIcon sx={{ fontSize: 18 }} />
+          </button>
         </div>
+
+        {viewMode === 'grid' ? (
+          <div className="mobile-app-grid tablet-app-grid">
+            {allApps.map((app) => (
+              <MobileAppIcon
+                key={app.id}
+                icon={app.icon}
+                label={app.label}
+                color={app.color}
+                onClick={() => app.id === 'music' ? toggleMusic() : openApp(app.id)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="mobile-app-list tablet-app-list">
+            {allApps.map((app) => {
+              const Icon = app.icon;
+              return (
+                <button
+                  key={app.id}
+                  className="mobile-app-list-item"
+                  onClick={() => app.id === 'music' ? toggleMusic() : openApp(app.id)}
+                >
+                  <div className="mobile-app-list-icon" style={{ background: app.color }}>
+                    <Icon sx={{ fontSize: 22, color: '#fff' }} />
+                  </div>
+                  <span className="mobile-app-list-label">{app.label}</span>
+                  <span className="mobile-app-list-arrow">›</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

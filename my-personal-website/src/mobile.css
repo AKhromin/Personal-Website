@@ -464,7 +464,7 @@
 }
 
 .mobile-page-content .json-line-content {
-  white-space: nowrap;
+  white-space: pre;
 }
 
 /* Terminal fix */
@@ -623,9 +623,20 @@
   font-size: 14px;
 }
 
-/* Tablet page content gets more padding */
+/* Tablet page content - centered with max-width for landscape/wide views */
 .tablet-mode .mobile-page-content {
   padding: 24px 32px;
+}
+
+.tablet-mode .mobile-page-content > * {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tablet list view wider */
+.tablet-mode .mobile-app-list.tablet-app-list {
+  max-width: 500px;
 }
 
 .tablet-mode .mobile-page-content .readme-header h1 {

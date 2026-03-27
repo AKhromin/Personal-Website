@@ -121,7 +121,7 @@ function MobileLayout() {
   const renderPageContent = () => {
     if (activeProject) {
       return (
-        <MobilePageView title={activeProject.title} onBack={goBack}>
+        <MobilePageView title={activeProject.filename} onBack={goBack}>
           <ProjectDetail project={activeProject} />
         </MobilePageView>
       );
@@ -244,7 +244,7 @@ function MobileProjects({ onOpenProject }) {
             {project.media[0] && <img src={project.media[0].url} alt={project.title} />}
           </div>
           <div className="mobile-project-info">
-            <h3>{project.title}</h3>
+            <h3>{project.filename}</h3>
             <p>{project.summary}</p>
             <div className="mobile-project-tags">
               {project.technologies.slice(0, 3).map((t, j) => (

@@ -21,6 +21,12 @@ function Projects() {
               <span className="project-card-ext">.proj</span>
             </div>
             <span className="project-card-name">{project.filename}</span>
+            <p className="project-card-summary">{project.summary}</p>
+            <div className="project-card-tags">
+              {project.technologies.slice(0, 5).map((tech, i) => (
+                <span key={i} className="project-card-tag">{tech}</span>
+              ))}
+            </div>
           </button>
         ))}
       </div>

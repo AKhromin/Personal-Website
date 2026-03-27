@@ -655,6 +655,35 @@ body {
   word-break: break-word;
 }
 
+.project-card-summary {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.project-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.project-card-tag {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--color-primary);
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
 /* ============================================
    EDUCATION FOLDER
    ============================================ */
