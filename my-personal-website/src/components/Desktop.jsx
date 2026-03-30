@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import DesktopIcons from './DesktopIcons';
+import DesktopWidgets from './DesktopWidgets';
+import DeskScene from './DeskScene';
 import Window from './Window';
 import Taskbar from './Taskbar';
 import About from './About';
@@ -12,6 +14,7 @@ import Terminal from './Terminal';
 import SnakeGame from './SnakeGame';
 import MinesweeperGame from './MinesweeperGame';
 import { useDesktop } from '../context/DesktopContext';
+import useTimeTheme from '../hooks/useTimeTheme';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import InfoIcon from '@mui/icons-material/Info';
@@ -87,6 +90,7 @@ function ContextMenu({ x, y, onClose }) {
 function Desktop() {
   const { projectWindows } = useDesktop();
   const [contextMenu, setContextMenu] = useState(null);
+  const { isNight } = useTimeTheme();
 
   const handleContextMenu = useCallback((e) => {
     // Only show on the desktop background, not on windows/icons
@@ -96,8 +100,10 @@ function Desktop() {
   }, []);
 
   return (
-    <div className="desktop" onContextMenu={handleContextMenu}>
+    <div className={`desktop ${isNight ? 'night-mode' : ''}`} onContextMenu={handleContextMenu}>
+      <DeskScene />
       <DesktopIcons />
+      <DesktopWidgets />
       <SnapPreview />
 
       <Window id="about"><About /></Window>
