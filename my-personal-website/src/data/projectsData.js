@@ -2,6 +2,7 @@ const projectsData = [
   {
     title: 'Counterback: Execution-Realistic Limit Order Book Backtesting',
     filename: 'counterback.proj',
+    repo: 'https://github.com/AKhromin/Counterback',
     summary:
       'An event-driven backtesting engine with full limit order book reconstruction and price-time-priority matching, built to measure how much the no-market-impact assumption inflates backtested performance.',
     description: [
@@ -24,6 +25,7 @@ const projectsData = [
   {
     title: 'Clearway: Real-Time Transport Anomaly Detection',
     filename: 'clearway.proj',
+    repo: 'https://github.com/AKhromin/Clearway',
     summary:
       'A real-time anomaly-detection pipeline that fuses live TfL arrival predictions, road-disruption reports and JamCam imagery to flag where official forecasts diverge from observed street conditions.',
     description: [
@@ -47,6 +49,7 @@ const projectsData = [
   {
     title: 'AWS One Day Proof of Concept',
     filename: 'aws_poc.proj',
+    repo: 'https://github.com/AKhromin/Divercity-AWS',
     summary:
       'An AI-powered proof-of-concept generator that transforms business ideas into comprehensive analyses, AWS architecture diagrams, and interactive demos.',
     description: [
@@ -97,6 +100,7 @@ const projectsData = [
   {
     title: 'Face Detection and Recognition',
     filename: 'face_recognition.proj',
+    repo: 'https://github.com/AKhromin/Computer-Vision-for-NGO-Problems',
     summary:
       'An advanced deep learning-based face recognition app with real-time detection, identification, and tracking across single and multi-video modes.',
     description: [
@@ -123,6 +127,7 @@ const projectsData = [
   {
     title: 'Car Make & Model Recognition',
     filename: 'car_recognition.proj',
+    repo: 'https://github.com/AKhromin/Car-make-and-model-recognition',
     summary:
       'A Python-based desktop application that uses deep learning to automatically recognize car makes and models from uploaded images.',
     description: [

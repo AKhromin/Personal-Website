@@ -38,6 +38,21 @@ function ProjectDetail({ project }) {
         <p className="readme-summary">{project.summary}</p>
       </div>
 
+      {/* Repository link */}
+      {project.repo && (
+        <a
+          className="readme-repo"
+          href={project.repo}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="readme-repo-icon" aria-hidden="true">{'</>'}</span>
+          <span className="readme-repo-url">
+            {project.repo.replace('https://', '')}
+          </span>
+        </a>
+      )}
+
       {/* Tech badges */}
       <div className="readme-badges">
         {project.technologies.map((tech, i) => (
