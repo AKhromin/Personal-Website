@@ -1,9 +1,15 @@
 import React, { useMemo } from 'react';
 
 const skillsData = {
-  languages: ["Python", "Java", "JavaScript", "R", "Scala", "C++", "Haskell", "Prolog", "HTML/CSS", "SQL"],
-  libraries_and_frameworks: ["PyTorch", "Scikit-Learn", "OpenCV & DeepFace", "MatPlotLib", "NumPy & Pandas", "TensorFlow", "React", "Node.js", "Flutter", "Flask"],
-  tools_and_platforms: ["Git & GitHub", "Amazon Web Services (AWS)", "Firebase", "CUDA", "Docker", "Linux/Unix", "Postman", "Google Cloud Platform (GCP)", "Ollama"]
+  top_skills: ["Python (Programming Language)", "C++", "Machine Learning", "Data Science", "Quantitative Finance"],
+  languages: ["Python", "C++", "TypeScript", "SQL", "Scala", "Java", "JavaScript", "R", "Haskell", "Prolog", "HTML/CSS"],
+  machine_learning_and_data: ["Machine Learning", "Data Science", "Data Engineering", "Computer Vision", "Facial Recognition", "Face Detection", "Hand Detection", "Speech Recognition", "Speech Communications", "Generative Adversarial Networks (GANs)", "Dimensionality Reduction", "Generalized Linear Models"],
+  quantitative_finance: ["Quantitative Finance", "Market Microstructure", "Limit Order Book", "Backtesting", "Monte Carlo Simulation", "Financial Analysis"],
+  mathematics_and_statistics: ["Probability and Statistics", "Linear Algebra", "Mathematics"],
+  libraries_and_frameworks: ["PyTorch", "Scikit-Learn", "XGBoost", "LightGBM", "SHAP", "NumPy", "Pandas (Software)", "MatPlotLib", "TensorFlow", "OpenCV & DeepFace", "React.js", "Node.js", "Flutter", "Flask"],
+  tools_and_platforms: ["Git", "GitHub", "Docker", "Linux", "Amazon Web Services (AWS)", "CUDA", "Firebase", "Google Cloud Platform (GCP)", "Postman", "Ollama"],
+  software_engineering: ["Algorithm Design", "Algorithm Development", "Object-Oriented Programming (OOP)", "Unified Modeling Language (UML)"],
+  professional: ["Analytical Skills", "Teamwork"]
 };
 
 // Build each line as { text, tokens } so line numbers always match 1:1
@@ -66,7 +72,7 @@ function Skills() {
       <div className="json-viewer">
         <div className="json-toolbar">
           <span className="json-filename">skills.json</span>
-          <span className="json-meta">{Object.values(skillsData).flat().length} skills</span>
+          <span className="json-meta">{new Set(Object.values(skillsData).flat()).size} skills</span>
         </div>
         <div className="json-body">
           {jsonLines.map((line, i) => (

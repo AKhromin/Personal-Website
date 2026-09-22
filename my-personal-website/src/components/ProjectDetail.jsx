@@ -45,48 +45,52 @@ function ProjectDetail({ project }) {
         ))}
       </div>
 
-      <hr className="readme-divider" />
+      {project.media.length > 0 && (
+        <>
+        <hr className="readme-divider" />
 
-      {/* Screenshots section */}
-      <h2 className="readme-section-title">Screenshots</h2>
-      <div className="readme-media">
-        <div
-          className="media-carousel"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {project.media.length > 1 && (
-            <button onClick={prevItem} className="carousel-arrow left">&lt;</button>
-          )}
-          <div className="media-wrapper" style={{ transform: `translateX(-${currentItemIndex * 100}%)` }}>
-            {project.media.map((item, index) => (
-              <div key={index} className="media-item">
-                {item.type === 'image' ? (
-                  <img src={item.url} alt={`${project.title} - ${index + 1}`} className="pane-image" />
-                ) : (
-                  <video src={item.url} controls className="pane-video">
-                    Your browser does not support the video tag.
-                  </video>
-                )}
-              </div>
-            ))}
+        {/* Screenshots section */}
+        <h2 className="readme-section-title">Screenshots</h2>
+        <div className="readme-media">
+          <div
+            className="media-carousel"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {project.media.length > 1 && (
+              <button onClick={prevItem} className="carousel-arrow left">&lt;</button>
+            )}
+            <div className="media-wrapper" style={{ transform: `translateX(-${currentItemIndex * 100}%)` }}>
+              {project.media.map((item, index) => (
+                <div key={index} className="media-item">
+                  {item.type === 'image' ? (
+                    <img src={item.url} alt={`${project.title} - ${index + 1}`} className="pane-image" />
+                  ) : (
+                    <video src={item.url} controls className="pane-video">
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
+                </div>
+              ))}
+            </div>
+            {project.media.length > 1 && (
+              <button onClick={nextItem} className="carousel-arrow right">&gt;</button>
+            )}
           </div>
           {project.media.length > 1 && (
-            <button onClick={nextItem} className="carousel-arrow right">&gt;</button>
+            <div className="readme-media-dots">
+              {project.media.map((_, i) => (
+                <span
+                  key={i}
+                  className={`readme-dot ${i === currentItemIndex ? 'active' : ''}`}
+                  onClick={() => setCurrentItemIndex(i)}
+                />
+              ))}
+            </div>
           )}
         </div>
-        {project.media.length > 1 && (
-          <div className="readme-media-dots">
-            {project.media.map((_, i) => (
-              <span
-                key={i}
-                className={`readme-dot ${i === currentItemIndex ? 'active' : ''}`}
-                onClick={() => setCurrentItemIndex(i)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+        </>
+      )}
 
       <hr className="readme-divider" />
 

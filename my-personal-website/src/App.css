@@ -835,6 +835,84 @@ body {
   display: block;
 }
 
+.about-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.about-section h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-muted);
+}
+
+.about-section p {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.about-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.about-list li {
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.about-list strong {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.about-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: var(--color-primary);
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.about-footer {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.about-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.about-link:hover {
+  text-decoration: underline;
+}
+
+.about-footer-sep {
+  margin: 0 6px;
+  opacity: 0.6;
+}
+
 /* ============================================
    PROJECT DETAIL (media, description, tech tags)
    ============================================ */
