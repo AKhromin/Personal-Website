@@ -64,10 +64,16 @@ const icons = [
     defaultGrid: { col: 0, row: 4 },
   },
   {
+    id: 'resume',
+    label: 'cv.pdf',
+    render: () => <FileIcon extension="PDF" color="#a33a3a" />,
+    defaultGrid: { col: 0, row: 5 },
+  },
+  {
     id: 'terminal',
     label: 'terminal.sh',
     render: () => <FileIcon extension="SH" color="#3a3a3a" />,
-    defaultGrid: { col: 0, row: 5 },
+    defaultGrid: { col: 0, row: 6 },
   },
   {
     id: 'snake',

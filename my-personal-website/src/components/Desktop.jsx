@@ -10,6 +10,7 @@ import ProjectDetail from './ProjectDetail';
 import Education from './Education';
 import Skills from './Skills';
 import Contact from './Contact';
+import Resume from './Resume';
 import Terminal from './Terminal';
 import SnakeGame from './SnakeGame';
 import MinesweeperGame from './MinesweeperGame';
@@ -116,6 +117,7 @@ function Desktop() {
       <Window id="education"><Education /></Window>
       <Window id="skills"><Skills /></Window>
       <Window id="contact"><Contact /></Window>
+      <Window id="resume"><Resume /></Window>
       <Window id="terminal"><Terminal /></Window>
       <Window id="snake"><SnakeGame /></Window>
       <Window id="minesweeper"><MinesweeperGame /></Window>

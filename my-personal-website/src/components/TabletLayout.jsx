@@ -6,6 +6,7 @@ import ProjectDetail from './ProjectDetail';
 import Education from './Education';
 import Skills from './Skills';
 import Contact from './Contact';
+import Resume from './Resume';
 import SnakeGame from './SnakeGame';
 import MinesweeperGame from './MinesweeperGame';
 import Terminal from './Terminal';
@@ -15,6 +16,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import SchoolIcon from '@mui/icons-material/School';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import EmailIcon from '@mui/icons-material/Email';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -31,6 +33,7 @@ const APPS = [
   { id: 'education', label: 'Education', icon: SchoolIcon, color: '#10b981' },
   { id: 'skills', label: 'Skills', icon: DataObjectIcon, color: '#f59e0b' },
   { id: 'contact', label: 'Contact', icon: EmailIcon, color: '#ef4444' },
+  { id: 'resume', label: 'CV', icon: PictureAsPdfIcon, color: '#a33a3a' },
   { id: 'terminal', label: 'Terminal', icon: TerminalIcon, color: '#1e1e2e' },
   { id: 'snake', label: 'Snake', icon: SportsEsportsIcon, color: '#2d8a4e' },
   { id: 'minesweeper', label: 'Minesweeper', icon: SportsEsportsIcon, color: '#6a4c93' },
@@ -135,6 +138,7 @@ function TabletLayout() {
     education: 'Education',
     skills: 'Skills',
     contact: 'Contact',
+    resume: 'CV',
     terminal: 'Terminal',
     snake: 'Snake',
     minesweeper: 'Minesweeper',
@@ -157,6 +161,7 @@ function TabletLayout() {
       education: <Education />,
       skills: <Skills />,
       contact: <Contact />,
+      resume: <Resume />,
       terminal: <Terminal />,
       snake: <SnakeGame />,
       minesweeper: <MinesweeperGame />,

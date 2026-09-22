@@ -12,6 +12,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import CodeIcon from '@mui/icons-material/Code';
 import SchoolIcon from '@mui/icons-material/School';
 import EmailIcon from '@mui/icons-material/Email';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
@@ -22,6 +23,7 @@ const ICON_MAP = {
   education: FolderIcon,
   skills: DataObjectIcon,
   contact: TerminalIcon,
+  resume: PictureAsPdfIcon,
   terminal: TerminalIcon,
   snake: SportsEsportsIcon,
   minesweeper: SportsEsportsIcon,
@@ -102,6 +104,7 @@ function StartMenu({ onClose, openWindow }) {
     { icon: CodeIcon, label: 'Projects', action: () => { openWindow('projects'); onClose(); } },
     { icon: SchoolIcon, label: 'Education', action: () => { openWindow('education'); onClose(); } },
     { icon: DataObjectIcon, label: 'Skills', action: () => { openWindow('skills'); onClose(); } },
+    { icon: PictureAsPdfIcon, label: 'CV', action: () => { openWindow('resume'); onClose(); } },
     { icon: EmailIcon, label: 'Contact', action: () => { openWindow('contact'); onClose(); } },
     'divider',
     { icon: TerminalIcon, label: 'Terminal', action: () => { openWindow('terminal'); onClose(); } },
