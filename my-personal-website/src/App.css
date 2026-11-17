@@ -70,6 +70,7 @@ body {
   right: 0;
   bottom: 48px;
   z-index: 10;
+  pointer-events: none;
 }
 
 .desktop-icon {
@@ -83,6 +84,7 @@ body {
   border: 2px solid transparent;
   border-radius: 8px;
   cursor: pointer;
+  pointer-events: auto;
   transition: all 0.15s ease;
   color: var(--color-dark);
 }
@@ -2204,24 +2206,269 @@ body {
 }
 
 /* ============================================
-   DESKTOP WIDGETS (right side)
+   DESKTOP WIDGETS
    ============================================ */
 
 .desktop-widgets {
+  --widget-accent: var(--color-primary);
+  --widget-ink: var(--color-dark);
+  --widget-border: #ffffff99;
+  --widget-surface: #f7faf5d9;
+  --widget-editor-surface: #f7faf5;
   position: absolute;
-  top: 24px;
-  right: 24px;
-  bottom: 72px;
-  width: 280px;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  inset: 0 0 48px;
+  z-index: 11;
   pointer-events: none;
 }
 
-.desktop-widgets > * {
+.night-mode .desktop-widgets {
+  --widget-border: #8aaec440;
+  --widget-surface: #162230d9;
+  --widget-editor-surface: #1a2937;
+  color-scheme: dark;
+}
+
+.desktop[data-custom-accent] .desktop-widgets {
+  --widget-accent: var(--personal-ink);
+}
+
+.desktop.night-mode[data-custom-accent] .desktop-widgets {
+  --widget-accent: var(--personal-accent);
+}
+
+.desktop-widget,
+.widget-tools {
+  position: absolute;
   pointer-events: auto;
+}
+
+.desktop-widget {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.desktop-widget.widget-dragging {
+  z-index: 3;
+  cursor: grabbing;
+}
+
+.widget-drag-handle {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: var(--widget-editor-surface);
+  color: var(--widget-accent);
+  cursor: grab;
+  opacity: 0;
+}
+
+.widget-compact .widget-drag-handle {
+  top: -5px;
+  right: -7px;
+}
+
+.desktop-widget:hover .widget-drag-handle,
+.desktop-widget:focus-within .widget-drag-handle,
+.desktop-widget.widget-dragging .widget-drag-handle {
+  opacity: 1;
+}
+
+.desktop-widget :is(.widget-clock-card, .widget-greeting-card, .widget-stats-card, .widget-pomodoro-card, .widget-mini) {
+  box-sizing: border-box;
+  height: 100%;
+  border: 1px solid var(--widget-border);
+  background: var(--widget-surface);
+}
+
+.widget-mini {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 0;
+  border-radius: 13px;
+  color: var(--widget-accent);
+  box-shadow: 0 3px 12px #101b241a;
+}
+
+button.widget-mini {
+  cursor: pointer;
+}
+
+.widget-tooltip {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 8px);
+  transform: translateY(-50%);
+  display: none;
+  gap: 2px;
+  width: max-content;
+  max-width: 186px;
+  padding: 6px 9px;
+  border: 1px solid var(--widget-border);
+  border-radius: 7px;
+  background: var(--widget-editor-surface);
+  color: var(--widget-ink);
+  box-shadow: 0 4px 12px #101b2433;
+  font: 12px/1.35 'Space Grotesk', sans-serif;
+  pointer-events: none;
+}
+
+.widget-tooltip[data-side='right'] {
+  right: auto;
+  left: calc(100% + 8px);
+}
+
+.widget-tooltip > span {
+  color: var(--color-text-secondary);
+}
+
+.widget-compact:not(.widget-dragging):is(:hover, :has(:focus-visible)) {
+  z-index: 2;
+}
+
+.widget-compact:not(.widget-dragging):is(:hover, :has(:focus-visible)) .widget-tooltip {
+  display: grid;
+}
+
+.desktop-widget .widget-mini-timer {
+  background:
+    linear-gradient(var(--widget-editor-surface) 0 0) padding-box,
+    conic-gradient(var(--widget-accent) var(--timer-progress), var(--widget-border) 0) border-box;
+  border: 3px solid transparent;
+}
+
+.widget-tools {
+  z-index: 4;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.widget-edit-button,
+.widget-editor button,
+.widget-editor select {
+  font: inherit;
+  color: inherit;
+}
+
+.widget-edit-button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--widget-border);
+  border-radius: 9px;
+  background: var(--widget-surface);
+  color: var(--widget-ink);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.widget-edit-button:hover,
+.widget-edit-button[aria-expanded='true'] {
+  border-color: var(--widget-accent);
+  color: var(--widget-accent);
+}
+
+.widget-editor {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  box-sizing: border-box;
+  width: 268px;
+  padding: 8px 12px;
+  overflow-y: auto;
+  border: 1px solid var(--widget-border);
+  border-radius: 12px;
+  background: var(--widget-editor-surface);
+  color: var(--widget-ink);
+  font-size: 12px;
+  box-shadow: 0 8px 28px #101b243c;
+}
+
+.widget-editor[data-above] {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+.widget-editor-row,
+.widget-editor-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.widget-editor-row {
+  justify-content: space-between;
+  min-height: 37px;
+}
+
+.widget-editor input[role='switch'] {
+  appearance: none;
+  flex: 0 0 29px;
+  height: 17px;
+  margin: 0;
+  border: 1px solid var(--widget-border);
+  border-radius: 10px;
+  background: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.widget-editor input[role='switch']::before {
+  content: '';
+  display: block;
+  width: 11px;
+  height: 11px;
+  margin: 2px;
+  border-radius: 50%;
+  background: var(--widget-editor-surface);
+}
+
+.widget-editor input[role='switch']:checked {
+  background: var(--widget-accent);
+}
+
+.widget-editor input[role='switch']:checked::before {
+  transform: translateX(12px);
+}
+
+.widget-editor select {
+  border: 1px solid var(--widget-border);
+  border-radius: 5px;
+  padding: 4px;
+  background: var(--widget-editor-surface);
+}
+
+.widget-editor .widget-reset-positions {
+  padding: 6px 0;
+  border: none;
+  background: transparent;
+  color: var(--widget-accent);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.desktop-widgets :is(button, input, select):focus-visible {
+  outline: 2px solid var(--widget-accent);
+  outline-offset: 2px;
+}
+
+.widget-announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
 }
 
 /* ---- Clock Card ---- */
@@ -2232,7 +2479,7 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 16px;
-  padding: 28px 24px 20px;
+  padding: 9px 16px;
   text-align: center;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   transition: all 0.4s ease;
@@ -2249,12 +2496,12 @@ body {
   align-items: baseline;
   justify-content: center;
   gap: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .clock-digit {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 52px;
+  font-size: 43px;
   font-weight: 700;
   color: var(--color-dark);
   letter-spacing: -2px;
@@ -2269,7 +2516,7 @@ body {
 
 .clock-separator {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 48px;
+  font-size: 39px;
   font-weight: 300;
   color: var(--color-primary);
   animation: blink 1s ease-in-out infinite;
@@ -2285,13 +2532,13 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 18px;
   font-weight: 500;
-  color: var(--color-muted);
+  color: var(--color-text-secondary);
   margin-left: 4px;
   min-width: 24px;
 }
 
 .night-mode .clock-seconds {
-  color: rgba(95, 168, 211, 0.5);
+  color: var(--widget-accent);
 }
 
 .widget-clock-date {
@@ -2300,7 +2547,7 @@ body {
   justify-content: center;
   gap: 6px;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--color-text-secondary);
   transition: color 1.5s ease;
@@ -2404,6 +2651,203 @@ body {
   font-weight: 600;
   color: var(--color-dark);
   transition: color 1.5s ease;
+}
+
+/* ---- Pomodoro ---- */
+
+.widget-pomodoro-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  color: var(--widget-ink);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.widget-timer-phase,
+.widget-timer-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.widget-timer-phase {
+  color: var(--widget-accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.widget-timer-time {
+  font-size: 30px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.widget-timer-actions button {
+  display: grid;
+  place-items: center;
+  min-height: 30px;
+  border: 1px solid var(--widget-accent);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font: 700 12px 'Space Grotesk', sans-serif;
+  cursor: pointer;
+}
+
+.widget-timer-start {
+  min-width: 55px;
+  background: var(--widget-accent);
+  color: var(--widget-editor-surface);
+}
+
+.widget-timer-reset,
+.widget-timer-settings {
+  background: transparent;
+  color: var(--widget-accent);
+}
+
+.widget-timer-actions .widget-timer-settings {
+  padding-inline: 5px;
+  border-color: var(--widget-border);
+}
+
+.widget-compact .widget-timer-settings {
+  position: absolute;
+  right: -5px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  padding: 0;
+  border: 1px solid var(--widget-border);
+  border-radius: 50%;
+  background: var(--widget-editor-surface);
+  cursor: pointer;
+}
+
+.widget-timer-actions button:hover {
+  opacity: 0.8;
+}
+
+.widget-timer-settings:hover {
+  border-color: var(--widget-accent);
+}
+
+.pomodoro-settings {
+  box-sizing: border-box;
+  width: min(374px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 1px solid var(--widget-border);
+  border-radius: 13px;
+  background: var(--widget-editor-surface);
+  color: var(--widget-ink);
+  font: 13px/1.4 'Space Grotesk', sans-serif;
+  pointer-events: auto;
+  box-shadow: 0 14px 44px #080c154f;
+}
+
+.pomodoro-settings::backdrop {
+  background: #080c154d;
+}
+
+.pomodoro-settings form {
+  padding: 16px;
+}
+
+.pomodoro-settings-header,
+.pomodoro-settings-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pomodoro-settings-header {
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.pomodoro-settings h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.pomodoro-setting {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.pomodoro-timing-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: 10px;
+}
+
+.pomodoro-setting-input {
+  position: relative;
+  display: block;
+}
+
+.pomodoro-setting-input span {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.pomodoro-settings :is(input, select, button) {
+  box-sizing: border-box;
+  min-height: 32px;
+  padding: 5px 8px;
+  border: 1px solid var(--widget-border);
+  border-radius: 6px;
+  background: var(--widget-editor-surface);
+  color: inherit;
+  font: inherit;
+}
+
+.pomodoro-settings :is(input, select) {
+  width: 100%;
+}
+
+.pomodoro-setting-input:has(span) input {
+  padding-right: 33px;
+}
+
+.pomodoro-settings button {
+  cursor: pointer;
+}
+
+.pomodoro-settings .pomodoro-settings-close {
+  display: grid;
+  place-items: center;
+  padding: 0 7px;
+}
+
+.pomodoro-preset-description {
+  min-height: 2.8em;
+  margin: 6px 0 9px;
+  color: var(--color-text-secondary);
+}
+
+.pomodoro-settings-footer {
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.pomodoro-settings button[type='submit'] {
+  border-color: var(--widget-accent);
+  background: var(--widget-accent);
+  color: var(--widget-editor-surface);
+  font-weight: 700;
 }
 
 /* ============================================
@@ -2600,12 +3044,4 @@ body {
 @keyframes codeAppear {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-/* ---- Responsive: hide widgets on smaller screens ---- */
-
-@media (max-width: 1100px) {
-  .desktop-widgets {
-    display: none;
-  }
 }

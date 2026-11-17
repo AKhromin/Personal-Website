@@ -4,6 +4,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useDesktop } from '../context/DesktopContext';
+import { gridPoint, nearestOpenCell } from '../desktopGrid';
 
 /* ---- CSS-based file icon (rectangle with folded corner + extension label) ---- */
 function FileIcon({ extension, color }) {
@@ -28,9 +29,6 @@ function FolderIcon({ OverlayIcon, color }) {
     </div>
   );
 }
-
-const GRID_CELL = 96; // grid snap size in px
-const TASKBAR_HEIGHT = 48;
 
 const icons = [
   {
@@ -89,22 +87,21 @@ const icons = [
   },
 ];
 
-function DesktopIcons() {
+export function defaultIconPositions() {
+  return Object.fromEntries(icons.map(({ id, defaultGrid }) => [id, gridPoint(defaultGrid)]));
+}
+
+function DesktopIcons({ positions, setPositions }) {
   const { openWindow } = useDesktop();
-  const [positions, setPositions] = useState(() =>
-    Object.fromEntries(
-      icons.map((icon) => [
-        icon.id,
-        { x: 24 + icon.defaultGrid.col * GRID_CELL, y: 24 + icon.defaultGrid.row * GRID_CELL },
-      ])
-    )
-  );
+  const [dragPoint, setDragPoint] = useState(null);
   const dragRef = useRef(null);
 
   const handleMouseDown = useCallback(
     (e, iconId) => {
       if (e.button !== 0) return;
       e.preventDefault();
+      const icon = e.currentTarget;
+      const layer = icon.parentElement;
       const startX = e.clientX;
       const startY = e.clientY;
       const startPos = { ...positions[iconId] };
@@ -117,10 +114,7 @@ function DesktopIcons() {
         didDrag = true;
         dragRef.current = iconId;
 
-        setPositions((prev) => ({
-          ...prev,
-          [iconId]: { x: startPos.x + dx, y: startPos.y + dy },
-        }));
+        setDragPoint({ id: iconId, x: startPos.x + dx, y: startPos.y + dy });
       };
 
       const handleMouseUp = (e) => {
@@ -129,25 +123,21 @@ function DesktopIcons() {
         document.body.style.userSelect = '';
 
         if (didDrag) {
-          // Snap to grid
-          const dx = e.clientX - startX;
-          const dy = e.clientY - startY;
-          let rawX = startPos.x + dx;
-          let rawY = startPos.y + dy;
-
-          // Clamp within desktop bounds
-          const maxX = window.innerWidth - GRID_CELL;
-          const maxY = window.innerHeight - TASKBAR_HEIGHT - GRID_CELL;
-          rawX = Math.max(0, Math.min(maxX, rawX));
-          rawY = Math.max(0, Math.min(maxY, rawY));
-
-          const snappedX = Math.round(rawX / GRID_CELL) * GRID_CELL + 24;
-          const snappedY = Math.round(rawY / GRID_CELL) * GRID_CELL + 24;
-
-          setPositions((prev) => ({
-            ...prev,
-            [iconId]: { x: snappedX, y: snappedY },
-          }));
+          const point = {
+            x: startPos.x + e.clientX - startX,
+            y: startPos.y + e.clientY - startY,
+          };
+          setDragPoint(null);
+          if (layer.isConnected) {
+            const area = layer.getBoundingClientRect();
+            const size = { width: icon.offsetWidth, height: icon.offsetHeight };
+            const occupied = [...layer.parentElement.querySelectorAll('.desktop-widget, .widget-tools')].map((element) => {
+              const { x, y, width, height } = element.getBoundingClientRect();
+              return { x: x - area.x, y: y - area.y, width, height };
+            });
+            const cell = nearestOpenCell(point, area, size, occupied);
+            if (cell) setPositions((previous) => ({ ...previous, [iconId]: gridPoint(cell) }));
+          }
 
           // Prevent the click from firing after drag
           setTimeout(() => { dragRef.current = null; }, 0);
@@ -160,7 +150,7 @@ function DesktopIcons() {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     },
-    [positions]
+    [positions, setPositions]
   );
 
   const handleClick = useCallback(
@@ -177,10 +167,11 @@ function DesktopIcons() {
         <button
           key={id}
           className="desktop-icon"
+          data-desktop-icon={id}
           style={{
             position: 'absolute',
-            left: positions[id].x,
-            top: positions[id].y,
+            left: dragPoint?.id === id ? dragPoint.x : positions[id].x,
+            top: dragPoint?.id === id ? dragPoint.y : positions[id].y,
           }}
           onMouseDown={(e) => handleMouseDown(e, id)}
           onClick={() => handleClick(id)}

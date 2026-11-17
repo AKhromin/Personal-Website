@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import DesktopIcons from './DesktopIcons';
+import DesktopIcons, { defaultIconPositions } from './DesktopIcons';
 import DesktopWidgets from './DesktopWidgets';
 import DeskScene from './DeskScene';
 import Personalization from './Personalization';
@@ -94,16 +94,17 @@ function ContextMenu({ x, y, onClose }) {
 function Desktop() {
   const { projectWindows, settings, setSettings } = useDesktop();
   const [contextMenu, setContextMenu] = useState(null);
-  const { period: localPeriod } = useTimeTheme();
+  const [iconPositions, setIconPositions] = useState(defaultIconPositions);
+  const time = useTimeTheme();
   const music = useMusicPlayer();
-  const period = settings.lighting === 'auto' ? localPeriod : settings.lighting;
+  const period = settings.lighting === 'auto' ? time.period : settings.lighting;
   const isNight = period === 'night' || period === 'dusk';
   const accent = ACCENTS[settings.accent];
   const isCustomized = settings.preset !== 'studio' || settings.accent !== 'blue';
 
   const handleContextMenu = useCallback((e) => {
-    // Only show on the desktop background, not on windows/icons
-    if (e.target.closest('.os-window, .desktop-icon, .taskbar, .personalization')) return;
+    // Only show on the desktop background.
+    if (e.target.closest('.os-window, .desktop-icon, .desktop-widget, .widget-tools, .taskbar, .personalization, .pomodoro-settings')) return;
     e.preventDefault();
     setContextMenu({ x: e.clientX, y: e.clientY });
   }, []);
@@ -122,8 +123,8 @@ function Desktop() {
       ) : (
         <div className={`desktop-wallpaper wallpaper--${settings.wallpaper}`} aria-hidden="true" />
       )}
-      <DesktopIcons />
-      <DesktopWidgets />
+      <DesktopIcons positions={iconPositions} setPositions={setIconPositions} />
+      <DesktopWidgets time={time} iconPositions={iconPositions} />
       <SnapPreview />
 
       <Window id="about"><About /></Window>
