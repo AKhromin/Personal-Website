@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useReducer, useCallback, useState, useRef } from 'react';
+import useDesktopPersonalization from '../hooks/useDesktopPersonalization';
+import useWindowSounds from '../hooks/useWindowSounds';
 
 const WINDOW_DEFAULTS = {
   about:         { x: 120, y: 40,  w: 650, h: 480, minW: 400, minH: 300 },
@@ -199,15 +201,32 @@ export function DesktopProvider({ children }) {
   const [state, dispatch] = useReducer(desktopReducer, initialState);
   const [dynamicTitles, setDynamicTitles] = useState({});
   const [projectWindows, setProjectWindows] = useState({});
+  const [settings, setSettings] = useDesktopPersonalization();
+  const playWindowSound = useWindowSounds(settings.soundEffects);
 
-  const openWindow = useCallback((id) => dispatch({ type: 'OPEN_WINDOW', id }), []);
-  const closeWindow = useCallback((id) => dispatch({ type: 'CLOSE_WINDOW', id }), []);
-  const minimizeWindow = useCallback((id) => dispatch({ type: 'MINIMIZE_WINDOW', id }), []);
+  const openWindow = useCallback((id) => {
+    dispatch({ type: 'OPEN_WINDOW', id });
+    playWindowSound();
+  }, [playWindowSound]);
+  const closeWindow = useCallback((id) => {
+    dispatch({ type: 'CLOSE_WINDOW', id });
+    playWindowSound();
+  }, [playWindowSound]);
+  const minimizeWindow = useCallback((id) => {
+    dispatch({ type: 'MINIMIZE_WINDOW', id });
+    playWindowSound();
+  }, [playWindowSound]);
   const focusWindow = useCallback((id) => dispatch({ type: 'FOCUS_WINDOW', id }), []);
   const moveWindow = useCallback((id, x, y) => dispatch({ type: 'MOVE_WINDOW', id, x, y }), []);
   const resizeWindow = useCallback((id, w, h, x, y) => dispatch({ type: 'RESIZE_WINDOW', id, w, h, x, y }), []);
-  const toggleMaximize = useCallback((id) => dispatch({ type: 'TOGGLE_MAXIMIZE', id }), []);
-  const snapWindow = useCallback((id, zone) => dispatch({ type: 'SNAP_WINDOW', id, zone }), []);
+  const toggleMaximize = useCallback((id) => {
+    dispatch({ type: 'TOGGLE_MAXIMIZE', id });
+    playWindowSound('snap');
+  }, [playWindowSound]);
+  const snapWindow = useCallback((id, zone) => {
+    dispatch({ type: 'SNAP_WINDOW', id, zone });
+    playWindowSound('snap');
+  }, [playWindowSound]);
   const setSnapPreview = useCallback((zone) => dispatch({ type: 'SET_SNAP_PREVIEW', zone }), []);
 
   const setWindowTitle = useCallback((id, title) => {
@@ -230,14 +249,25 @@ export function DesktopProvider({ children }) {
       id: windowId,
       defaults: { x, y, ...PROJECT_WINDOW_DEFAULTS },
     });
-  }, []);
+    playWindowSound();
+  }, [playWindowSound]);
 
   const getTitle = useCallback((id) => {
     return dynamicTitles[id] || WINDOW_TITLES[id] || id;
   }, [dynamicTitles]);
 
+  const activeWindowId = Object.keys(state.windows).reduce((activeId, id) => {
+    const win = state.windows[id];
+    return win.isOpen && !win.isMinimized && (!activeId || win.zIndex > state.windows[activeId].zIndex)
+      ? id
+      : activeId;
+  }, null);
+
   const value = {
     windows: state.windows,
+    activeWindowId,
+    settings,
+    setSettings,
     windowTitles: { ...WINDOW_TITLES, ...dynamicTitles },
     windowDefaults: { ...WINDOW_DEFAULTS, ...Object.fromEntries(
       Object.keys(projectWindows).map((id) => [id, PROJECT_WINDOW_DEFAULTS])

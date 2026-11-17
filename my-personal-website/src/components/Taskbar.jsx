@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDesktop } from '../context/DesktopContext';
 import DescriptionIcon from '@mui/icons-material/Description';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -33,42 +33,6 @@ function getIcon(id) {
   if (ICON_MAP[id]) return ICON_MAP[id];
   if (id.startsWith('project-')) return DescriptionIcon;
   return DescriptionIcon;
-}
-
-/* ---- Background Music Player ---- */
-const MUSIC_URL = `${import.meta.env.BASE_URL}assets/audio/lofi-background.mp3`;
-
-function useMusicPlayer() {
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.3);
-  const [showVolume, setShowVolume] = useState(false);
-
-  useEffect(() => {
-    const audio = new Audio(MUSIC_URL);
-    audio.loop = true;
-    audio.volume = volume;
-    audioRef.current = audio;
-    return () => { audio.pause(); audio.src = ''; };
-  }, []);
-
-  const togglePlay = useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play().catch(() => {});
-    }
-    setIsPlaying(!isPlaying);
-  }, [isPlaying]);
-
-  const changeVolume = useCallback((val) => {
-    setVolume(val);
-    if (audioRef.current) audioRef.current.volume = val;
-  }, []);
-
-  return { isPlaying, togglePlay, volume, changeVolume, showVolume, setShowVolume };
 }
 
 /* ---- Clock ---- */
@@ -139,19 +103,15 @@ function StartMenu({ onClose, openWindow }) {
 }
 
 /* ---- Taskbar ---- */
-function Taskbar() {
-  const { windows, windowTitles, minimizeWindow, focusWindow, openWindow } = useDesktop();
+function Taskbar({ music }) {
+  const { windows, windowTitles, activeWindowId, minimizeWindow, focusWindow, openWindow } = useDesktop();
   const [startOpen, setStartOpen] = useState(false);
-  const music = useMusicPlayer();
+  const [showVolume, setShowVolume] = useState(false);
 
   const openWindows = Object.entries(windows).filter(([, w]) => w.isOpen);
-  const maxZ = Math.max(0, ...openWindows.map(([, w]) => w.zIndex));
 
   const handleClick = (id) => {
-    const win = windows[id];
-    if (win.isMinimized) {
-      focusWindow(id);
-    } else if (win.zIndex === maxZ) {
+    if (id === activeWindowId) {
       minimizeWindow(id);
     } else {
       focusWindow(id);
@@ -168,7 +128,7 @@ function Taskbar() {
       <div className="taskbar-windows">
         {openWindows.map(([id, win]) => {
           const Icon = getIcon(id);
-          const isFocused = win.zIndex === maxZ && !win.isMinimized;
+          const isFocused = id === activeWindowId;
           return (
             <button
               key={id}
@@ -192,7 +152,7 @@ function Taskbar() {
         </button>
         <button
           className="taskbar-tray-btn"
-          onClick={() => music.setShowVolume((prev) => !prev)}
+          onClick={() => setShowVolume((prev) => !prev)}
           title="Volume"
         >
           {music.volume > 0 ? (
@@ -204,11 +164,12 @@ function Taskbar() {
         <TaskbarClock />
       </div>
 
-      {music.showVolume && (
+      {showVolume && (
         <div className="volume-popup">
           <VolumeOffIcon sx={{ fontSize: 14, color: '#6c7086' }} />
           <input
             type="range"
+            aria-label="Music volume"
             min="0"
             max="1"
             step="0.01"

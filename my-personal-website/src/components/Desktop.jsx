@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import DesktopIcons from './DesktopIcons';
 import DesktopWidgets from './DesktopWidgets';
 import DeskScene from './DeskScene';
+import Personalization from './Personalization';
 import Window from './Window';
 import Taskbar from './Taskbar';
 import About from './About';
@@ -16,12 +17,14 @@ import SnakeGame from './SnakeGame';
 import MinesweeperGame from './MinesweeperGame';
 import { useDesktop } from '../context/DesktopContext';
 import useTimeTheme from '../hooks/useTimeTheme';
+import useMusicPlayer from '../hooks/useMusicPlayer';
+import { ACCENTS } from '../hooks/useDesktopPersonalization';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import InfoIcon from '@mui/icons-material/Info';
 import PersonIcon from '@mui/icons-material/Person';
 import CodeIcon from '@mui/icons-material/Code';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import '../personalization.css';
 
 function SnapPreview() {
   const { snapPreview } = useDesktop();
@@ -89,20 +92,36 @@ function ContextMenu({ x, y, onClose }) {
 }
 
 function Desktop() {
-  const { projectWindows } = useDesktop();
+  const { projectWindows, settings, setSettings } = useDesktop();
   const [contextMenu, setContextMenu] = useState(null);
-  const { isNight } = useTimeTheme();
+  const { period: localPeriod } = useTimeTheme();
+  const music = useMusicPlayer();
+  const period = settings.lighting === 'auto' ? localPeriod : settings.lighting;
+  const isNight = period === 'night' || period === 'dusk';
+  const accent = ACCENTS[settings.accent];
+  const isCustomized = settings.preset !== 'studio' || settings.accent !== 'blue';
 
   const handleContextMenu = useCallback((e) => {
     // Only show on the desktop background, not on windows/icons
-    if (e.target.closest('.os-window') || e.target.closest('.desktop-icon') || e.target.closest('.taskbar')) return;
+    if (e.target.closest('.os-window, .desktop-icon, .taskbar, .personalization')) return;
     e.preventDefault();
     setContextMenu({ x: e.clientX, y: e.clientY });
   }, []);
 
   return (
-    <div className={`desktop ${isNight ? 'night-mode' : ''}`} onContextMenu={handleContextMenu}>
-      <DeskScene />
+    <div
+      className={`desktop${isNight ? ' night-mode' : ''}`}
+      data-preset={settings.preset}
+      data-wallpaper={settings.wallpaper}
+      data-custom-accent={isCustomized ? '' : undefined}
+      style={{ '--personal-accent': accent.swatch, '--personal-ink': accent.ink }}
+      onContextMenu={handleContextMenu}
+    >
+      {settings.wallpaper === 'desk' ? (
+        <DeskScene assets={settings.deskItems} period={period} isNight={isNight} lampOn={settings.lampOn} />
+      ) : (
+        <div className={`desktop-wallpaper wallpaper--${settings.wallpaper}`} aria-hidden="true" />
+      )}
       <DesktopIcons />
       <DesktopWidgets />
       <SnapPreview />
@@ -122,7 +141,8 @@ function Desktop() {
       <Window id="snake"><SnakeGame /></Window>
       <Window id="minesweeper"><MinesweeperGame /></Window>
 
-      <Taskbar />
+      <Taskbar music={music} />
+      <Personalization settings={settings} setSettings={setSettings} music={music} />
 
       {contextMenu && (
         <ContextMenu

@@ -1,54 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import useTimeTheme from '../hooks/useTimeTheme';
-import TuneIcon from '@mui/icons-material/Tune';
-import CloseIcon from '@mui/icons-material/Close';
+import React, { memo } from 'react';
 
-const ASSETS = [
-  { id: 'plant', label: 'Plant', default: true },
-  { id: 'coffee', label: 'Coffee Mug', default: true },
-  { id: 'lamp', label: 'Desk Lamp', default: true },
-  { id: 'cat', label: 'Cat', default: false },
-  { id: 'books', label: 'Books', default: true },
-  { id: 'headphones', label: 'Headphones', default: false },
-  { id: 'photo', label: 'Photo Frame', default: true },
-  { id: 'cactus', label: 'Mini Cactus', default: false },
-];
+const SKY_GRADIENTS = {
+  day: 'url(#skyDay)',
+  dawn: 'url(#skyDawn)',
+  dusk: 'url(#skyDusk)',
+  night: 'url(#skyNight)',
+};
 
-const STORAGE_KEY = 'desk-scene-assets';
-
-function loadAssets() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
-  } catch {}
-  const defaults = {};
-  ASSETS.forEach((a) => (defaults[a.id] = a.default));
-  return defaults;
-}
-
-function DeskScene() {
-  const { isNight, period } = useTimeTheme();
-  const [assets, setAssets] = useState(loadAssets);
-  const [showPanel, setShowPanel] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(assets));
-  }, [assets]);
-
-  const toggle = useCallback((id) => {
-    setAssets((prev) => ({ ...prev, [id]: !prev[id] }));
-  }, []);
-
-  const skyGradient = isNight
-    ? 'url(#skyNight)'
-    : period === 'dawn'
-    ? 'url(#skyDawn)'
-    : period === 'dusk'
-    ? 'url(#skyDusk)'
-    : 'url(#skyDay)';
+function DeskScene({ assets, period, isNight, lampOn }) {
+  const lampLit = assets.lamp && lampOn;
 
   return (
-    <div className={`desk-scene-bg ${showPanel ? 'desk-scene-editing' : ''}`}>
+    <div className="desk-scene-bg">
       <svg
         className="desk-scene-svg"
         viewBox="0 0 560 380"
@@ -86,9 +49,13 @@ function DeskScene() {
             <stop offset="0%" stopColor={isNight ? 'rgba(255,220,150,0.45)' : 'rgba(255,220,150,0.1)'} />
             <stop offset="100%" stopColor="rgba(255,220,150,0)" />
           </radialGradient>
+          <linearGradient id="lampReflection">
+            <stop offset="0%" stopColor="#ffdc96" stopOpacity={isNight ? 0.15 : 0.07} />
+            <stop offset="70%" stopColor="#ffdc96" stopOpacity="0" />
+          </linearGradient>
           {/* Warm ambient for night */}
           <radialGradient id="ambientWarm" cx="40%" cy="70%" r="60%">
-            <stop offset="0%" stopColor={isNight ? 'rgba(255,200,100,0.06)' : 'rgba(0,0,0,0)'} />
+            <stop offset="0%" stopColor={isNight && lampLit ? 'rgba(255,200,100,0.12)' : 'rgba(0,0,0,0)'} />
             <stop offset="100%" stopColor="rgba(0,0,0,0)" />
           </radialGradient>
           <filter id="steamBlur">
@@ -104,7 +71,7 @@ function DeskScene() {
         </defs>
 
         {/* ===== WALL ===== */}
-        <rect x="0" y="0" width="560" height="245" fill={isNight ? '#0f1923' : '#f4f9e9'} className="desk-wall" />
+        <rect x="0" y="0" width="560" height="245" fill="var(--color-bg)" className="desk-wall" />
 
         {/* Ambient light overlay */}
         <rect x="0" y="0" width="560" height="380" fill="url(#ambientWarm)" />
@@ -138,7 +105,7 @@ function DeskScene() {
         {/* ===== WINDOW WITH VIEW ===== */}
         <g className="desk-window">
           <rect x="300" y="20" width="180" height="140" rx="4" fill={isNight ? '#243447' : '#d4c9b8'} />
-          <rect x="306" y="26" width="168" height="128" rx="3" fill={skyGradient} />
+          <rect x="306" y="26" width="168" height="128" rx="3" fill={SKY_GRADIENTS[period]} />
           {/* Window cross bars */}
           <line x1="390" y1="26" x2="390" y2="154" stroke={isNight ? '#243447' : '#d4c9b8'} strokeWidth="4" />
           <line x1="306" y1="90" x2="474" y2="90" stroke={isNight ? '#243447' : '#d4c9b8'} strokeWidth="4" />
@@ -191,7 +158,7 @@ function DeskScene() {
           )}
 
           {/* Night elements */}
-          {isNight && (
+          {period === 'night' && (
             <g className="window-night">
               {/* Moon with detail */}
               <circle cx="440" cy="55" r="14" fill="#e8e4c9" />
@@ -227,7 +194,7 @@ function DeskScene() {
           )}
 
           {/* Dawn/Dusk */}
-          {(period === 'dawn' || period === 'dusk') && !isNight && (
+          {(period === 'dawn' || period === 'dusk') && (
             <g>
               <ellipse cx="350" cy="148" rx="60" ry="18" fill={period === 'dawn' ? '#8bc77a' : '#4a3040'} />
               <ellipse cx="420" cy="150" rx="50" ry="14" fill={period === 'dawn' ? '#6aad57' : '#3d2535'} />
@@ -256,7 +223,7 @@ function DeskScene() {
         </g>
 
         {/* ===== FLOOR ===== */}
-        <rect x="0" y="245" width="560" height="135" fill={isNight ? '#0f1923' : '#f4f9e9'} />
+        <rect x="0" y="245" width="560" height="135" fill="var(--color-bg)" />
 
         {/* ===== DESK ===== */}
         <rect x="30" y="240" width="500" height="16" rx="3" fill={isNight ? '#2a1f14' : '#8B6F4E'} />
@@ -313,6 +280,7 @@ function DeskScene() {
           <circle cx="280" cy="222" r="1.5" fill={isNight ? '#5fa8d3' : '#4a9a5a'} className="desk-led" />
           {/* Screen reflection */}
           <rect x="206" y="136" width="148" height="82" rx="3" fill="url(#monitorGlow)" opacity="0.1" />
+          {lampLit && <rect x="206" y="136" width="148" height="82" rx="3" fill="url(#lampReflection)" />}
         </g>
 
         {/* ===== KEYBOARD ===== */}
@@ -340,14 +308,14 @@ function DeskScene() {
         {/* ===== LAMP (toggleable) ===== */}
         {assets.lamp && (
           <g className="desk-lamp">
-            <path d="M100,160 L60,245 L140,245 Z" fill="url(#lampLight)" />
-            {isNight && <ellipse cx="100" cy="245" rx="45" ry="8" fill="rgba(255,220,150,0.08)" />}
+            {lampLit && <path d="M100,160 L60,245 L140,245 Z" fill="url(#lampLight)" className="desk-lamp-glow" />}
+            {isNight && lampLit && <ellipse cx="100" cy="245" rx="45" ry="8" fill="rgba(255,220,150,0.08)" />}
             <ellipse cx="100" cy="245" rx="18" ry="4" fill={isNight ? '#2a3040' : '#555'} />
             <line x1="100" y1="241" x2="100" y2="175" stroke={isNight ? '#3a4a5a' : '#666'} strokeWidth="3" />
             <line x1="100" y1="175" x2="100" y2="168" stroke={isNight ? '#4a5a6a' : '#777'} strokeWidth="2" />
             <path d="M82,162 L100,150 L118,162 Z" fill={isNight ? '#c9a84c' : '#d4a84c'} />
             <path d="M84,162 L100,152 L116,162" fill="none" stroke={isNight ? '#b8974a' : '#c49a44'} strokeWidth="0.5" />
-            {isNight && (
+            {isNight && lampLit && (
               <>
                 <circle cx="100" cy="163" r="5" fill="#ffeaa7" opacity="0.5" className="desk-bulb-glow" />
                 <circle cx="100" cy="163" r="10" fill="#ffeaa7" opacity="0.1" filter="url(#glow)" className="desk-bulb-glow" />
@@ -516,43 +484,8 @@ function DeskScene() {
         </g>
       </svg>
 
-      {/* Customize button - always visible, bottom-right */}
-      <button
-        className="desk-scene-customize-btn"
-        onMouseDown={(e) => { e.stopPropagation(); }}
-        onClick={(e) => { e.stopPropagation(); setShowPanel((p) => !p); }}
-        title="Customize desk"
-      >
-        <TuneIcon sx={{ fontSize: 16 }} />
-        <span>Customize</span>
-      </button>
-
-      {/* Customization panel */}
-      {showPanel && (
-        <div className="desk-scene-panel">
-          <div className="desk-scene-panel-header">
-            <span>Customize Desk</span>
-            <button onClick={() => setShowPanel(false)}>
-              <CloseIcon sx={{ fontSize: 14 }} />
-            </button>
-          </div>
-          <div className="desk-scene-panel-items">
-            {ASSETS.map((asset) => (
-              <label key={asset.id} className="desk-scene-toggle">
-                <input
-                  type="checkbox"
-                  checked={!!assets[asset.id]}
-                  onChange={() => toggle(asset.id)}
-                />
-                <span className="desk-scene-toggle-slider" />
-                <span className="desk-scene-toggle-label">{asset.label}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
-export default DeskScene;
+export default memo(DeskScene);

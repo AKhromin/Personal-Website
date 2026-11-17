@@ -44,6 +44,7 @@ function getSnapStyle(zone) {
 function Window({ id, children }) {
   const {
     windows,
+    activeWindowId,
     windowTitles,
     windowDefaults,
     closeWindow,
@@ -229,7 +230,7 @@ function Window({ id, children }) {
   return (
     <div
       ref={windowRef}
-      className={`os-window ${isMax || isSnapped ? 'snapped' : ''}`}
+      className={`os-window${isMax || isSnapped ? ' snapped' : ''}${id === activeWindowId ? ' is-active' : ''}`}
       style={style}
       onMouseDown={() => focusWindow(id)}
     >

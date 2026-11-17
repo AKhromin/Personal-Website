@@ -1,0 +1,468 @@
+/* Desktop wallpapers and shared previews */
+.desktop-wallpaper {
+  position: absolute;
+  inset: 0 0 48px;
+  pointer-events: none;
+}
+
+.wallpaper--desk {
+  background:
+    linear-gradient(#8dbaca, #506f84) 77% 16% / 28% 44% no-repeat,
+    linear-gradient(#a27757, #a27757) 65% 80% / 70% 6% no-repeat,
+    linear-gradient(145deg, #3a525e, #182833);
+}
+
+.wallpaper--gradient {
+  background: radial-gradient(ellipse at 76% 74%, #317b83, transparent 67%), linear-gradient(140deg, #12223d, #213c59);
+}
+
+.wallpaper--matrix {
+  --grid-step: 24px;
+  background:
+    radial-gradient(ellipse at 58% 100%, #28784948, transparent 72%),
+    repeating-linear-gradient(0deg, #7df4a723 0 1px, transparent 1px var(--grid-step)),
+    repeating-linear-gradient(90deg, #7df4a723 0 1px, transparent 1px var(--grid-step)),
+    #060d09;
+}
+
+.wallpaper--skyline {
+  background:
+    radial-gradient(circle at 74% 49%, #ffc189 0 8%, transparent 8.15%),
+    linear-gradient(#100d28 5%, #2e1848 42%, #8c396e 77%, #d38178);
+}
+
+.wallpaper--skyline::before,
+.wallpaper--skyline::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 54%;
+}
+
+.wallpaper--skyline::before {
+  background: #3b254e;
+  clip-path: polygon(0 51%, 7% 51%, 7% 30%, 15% 30%, 15% 67%, 24% 67%, 24% 47%, 32% 47%, 32% 71%, 39% 71%, 39% 23%, 46% 23%, 46% 52%, 54% 52%, 54% 34%, 62% 34%, 62% 62%, 69% 62%, 69% 46%, 78% 46%, 78% 70%, 86% 70%, 86% 33%, 95% 33%, 95% 60%, 100% 60%, 100% 100%, 0 100%);
+}
+
+.wallpaper--skyline::after {
+  height: 37%;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 4px, #18152c 4px 17px),
+    repeating-linear-gradient(90deg, #593046 0 4px, #18152c 4px 21px);
+  clip-path: polygon(0 74%, 4% 74%, 4% 35%, 11% 35%, 11% 57%, 20% 57%, 20% 28%, 28% 28%, 28% 70%, 35% 70%, 35% 51%, 43% 51%, 43% 77%, 51% 77%, 51% 35%, 57% 35%, 57% 17%, 62% 17%, 62% 35%, 67% 35%, 67% 72%, 74% 72%, 74% 56%, 82% 56%, 82% 74%, 89% 74%, 89% 42%, 96% 42%, 96% 61%, 100% 61%, 100% 100%, 0 100%);
+}
+
+.desktop:not([data-wallpaper='desk']) .desktop-icon-label {
+  color: #f3f7fa;
+  text-shadow: 0 1px 4px #080c15;
+}
+
+.desktop:not([data-wallpaper='desk']) .desktop-icon:hover {
+  background: #ffffff25;
+}
+
+/* Preset window chrome */
+.desktop[data-preset='synthwave'],
+.theme-preview--synthwave {
+  --theme-chrome: #302044;
+  --theme-taskbar: #150e25;
+  --theme-chrome-text: #f5e2fa;
+  --theme-font: 'Space Grotesk', sans-serif;
+}
+
+.desktop[data-preset='classic'],
+.theme-preview--classic {
+  --theme-chrome: #d0d5da;
+  --theme-taskbar: #263a41;
+  --theme-chrome-text: #17262e;
+  --theme-font: Verdana, Geneva, sans-serif;
+}
+
+.desktop[data-preset='terminal'],
+.theme-preview--terminal {
+  --theme-chrome: #101b14;
+  --theme-taskbar: #070d09;
+  --theme-chrome-text: #acf1bd;
+  --theme-font: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+}
+
+.desktop[data-preset]:not([data-preset='studio']) :is(.window-titlebar, .start-menu, .context-menu) {
+  background: var(--theme-chrome);
+}
+
+.desktop[data-preset]:not([data-preset='studio']) :is(.window-title, .win-control-btn) {
+  color: var(--theme-chrome-text);
+}
+
+.desktop[data-preset='classic'] .window-titlebar {
+  box-shadow: inset 2px 2px #f7fafb, inset 0 -2px #a6afb7;
+}
+
+.desktop[data-preset='classic'] :is(.os-window, .window-content, .taskbar-button, .folder-icon-body, .file-icon-shape) {
+  border-radius: 0;
+}
+
+.desktop[data-preset='classic'] .desktop-wallpaper.wallpaper--gradient,
+.theme-preview--classic.wallpaper--gradient {
+  background: linear-gradient(145deg, #163e4a, #267678 80%, #30898c);
+}
+
+.desktop[data-preset]:not([data-preset='studio']) .taskbar {
+  background: var(--theme-taskbar);
+}
+
+.desktop[data-preset]:not([data-preset='studio']) :is(.start-menu, .context-menu) {
+  color: var(--theme-chrome-text);
+  --color-text: var(--theme-chrome-text);
+}
+
+.desktop[data-preset]:not([data-preset='studio']) :is(.start-menu-item, .context-menu-item, .start-menu-name, .start-menu-subtitle, .context-menu-item .shortcut) {
+  color: var(--theme-chrome-text);
+}
+
+.desktop[data-preset]:not([data-preset='studio']) :is(.desktop-icon-label, .window-title, .taskbar-button, .taskbar-logo, .window-content, .window-content h1, .window-content h2, .window-content h3, .project-card-name) {
+  font-family: var(--theme-font);
+}
+
+/* A bright accent for desktop chrome and a darker counterpart for white panels. */
+.desktop[data-custom-accent] :is(.window-content, .projects-folder, .readme) {
+  --color-primary: var(--personal-ink);
+  --color-accent: var(--personal-ink);
+  --color-project-accent: var(--personal-ink);
+}
+
+.desktop[data-custom-accent] :is(.project-card-name, .readme-header h1, .readme .readme-section-title) {
+  color: var(--personal-ink);
+}
+
+.desktop.night-mode[data-custom-accent] :is(.project-media-placeholder, .readme-media-placeholder) {
+  color: var(--personal-accent);
+}
+
+.desktop[data-custom-accent] .os-window.is-active {
+  box-shadow: 0 8px 30px #080c1540;
+}
+
+.desktop[data-custom-accent] .os-window.is-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  border: 1px solid var(--personal-accent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.desktop[data-preset='synthwave'] .os-window.is-active {
+  box-shadow: 0 0 0 1px var(--personal-accent), 0 0 26px color-mix(in srgb, var(--personal-accent) 42%, transparent);
+}
+
+.desktop[data-custom-accent] .taskbar-button.focused {
+  border-color: var(--personal-accent);
+  background: color-mix(in srgb, var(--personal-accent) 22%, transparent);
+}
+
+.desktop[data-custom-accent] .snap-preview {
+  border-color: var(--personal-accent);
+  background: color-mix(in srgb, var(--personal-accent) 18%, transparent);
+}
+
+.desktop[data-custom-accent] ::selection {
+  background: var(--personal-ink);
+  color: white;
+}
+
+/* Bottom-right settings dialog */
+.personalization-trigger,
+.personalization {
+  --panel-bg: #f9fbfc;
+  --panel-ink: #172d3a;
+  --panel-muted: #51677a;
+  --panel-border: #cfdce4;
+  --panel-accent: var(--personal-ink);
+  --panel-highlight: color-mix(in srgb, var(--panel-accent) 12%, var(--panel-bg));
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.night-mode :is(.personalization-trigger, .personalization) {
+  --panel-bg: var(--theme-chrome, #172938);
+  --panel-ink: #f3f7fa;
+  --panel-muted: #c8d6e5;
+  --panel-border: #ffffff2e;
+  --panel-accent: var(--personal-accent);
+  color-scheme: dark;
+}
+
+.personalization-trigger {
+  position: absolute;
+  right: 12px;
+  bottom: 60px;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--panel-border);
+  border-radius: 18px;
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 12px #080c1526;
+}
+
+.personalization-trigger:hover {
+  background: var(--panel-highlight);
+  border-color: var(--panel-accent);
+}
+
+.personalization {
+  position: fixed;
+  inset: auto 12px 98px auto;
+  width: min(394px, calc(100vw - 24px));
+  max-width: none;
+  max-height: calc(100vh - 110px);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  box-shadow: 0 14px 44px #080c154f;
+}
+
+.personalization::backdrop {
+  background: #080c152c;
+}
+
+.personalization-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+}
+
+.personalization-header,
+.personalization-tabs {
+  display: flex;
+  align-items: center;
+  padding-inline: 16px;
+}
+
+.personalization-header {
+  justify-content: space-between;
+  padding-block: 12px 8px;
+}
+
+.personalization-header h2 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.personalization button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.personalization-header button {
+  display: flex;
+  padding: 5px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+}
+
+.personalization-tabs {
+  gap: 4px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.personalization-tabs button {
+  padding: 8px 10px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--panel-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.personalization-tabs button[aria-selected='true'] {
+  border-color: var(--panel-accent);
+  color: var(--panel-accent);
+}
+
+.personalization :is(button, select, input, summary):focus-visible,
+.personalization-trigger:focus-visible {
+  outline: 2px solid var(--panel-accent);
+  outline-offset: 2px;
+}
+
+.personalization-content {
+  overflow-y: auto;
+  padding: 14px 16px 16px;
+  font-size: 13px;
+}
+
+.personalization-content h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.personalization-choices,
+.personalization-desk-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.personalization .personalization-choice,
+.personalization .personalization-accent {
+  text-align: start;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.personalization-choice {
+  display: grid;
+  gap: 6px;
+  padding: 7px;
+}
+
+.personalization-accents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.personalization-accent {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+}
+
+.personalization-accent span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #080c1535;
+}
+
+.personalization button:hover,
+.personalization button[aria-pressed='true'] {
+  background-color: var(--panel-highlight);
+}
+
+.personalization button[aria-pressed='true'] {
+  border-color: var(--panel-accent);
+  box-shadow: inset 0 0 0 1px var(--panel-accent);
+}
+
+.appearance-preview {
+  --grid-step: 10px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 53px;
+  border-radius: 4px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.theme-preview-window {
+  z-index: 1;
+  width: 46%;
+  height: 54%;
+  border: 1px solid var(--theme-chrome, #395369);
+  border-top-width: 7px;
+  border-radius: 3px;
+  background: #f1f4f5;
+  box-shadow: 0 3px 9px #090c1780;
+}
+
+.theme-preview--synthwave .theme-preview-window { border-color: #fa85c7; }
+.theme-preview--classic .theme-preview-window { border-radius: 0; }
+.theme-preview--terminal .theme-preview-window { background: #101b14; border-color: #80df9a; }
+
+.personalization-switch,
+.personalization-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 36px;
+}
+
+.personalization-switch input {
+  appearance: none;
+  flex: 0 0 34px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  background: var(--panel-muted);
+  cursor: pointer;
+}
+
+.personalization-switch input::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin: 3px;
+  border-radius: 50%;
+  background: var(--panel-bg);
+}
+
+.personalization-switch input:checked {
+  background: var(--panel-accent);
+}
+
+.personalization-switch input:checked::before {
+  transform: translateX(14px);
+}
+
+.personalization-switch input:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.personalization-select select {
+  max-width: 63%;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 5px 6px;
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  font: inherit;
+}
+
+.personalization-desk {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--panel-border);
+}
+
+.personalization-desk summary {
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.personalization-desk-items label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.personalization-desk-items input {
+  accent-color: var(--panel-accent);
+}
