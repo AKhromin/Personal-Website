@@ -2033,6 +2033,33 @@ body {
   color: #c8d6e5;
 }
 
+/* Project windows keep a white content area in night mode. */
+.desktop.night-mode :is(.projects-folder, .readme) {
+  --color-project-accent: #2f6b91;
+  --color-text-secondary: #51677a;
+}
+
+.desktop.night-mode :is(
+  .project-card-name,
+  .readme-header h1,
+  .readme-section-title,
+  .readme-callout.note .readme-callout-title,
+  .readme-tech-item
+) {
+  color: var(--color-project-accent);
+}
+
+.desktop.night-mode .readme-repo {
+  background: #eef5fa;
+  border-color: #bfd6e6;
+  color: var(--color-project-accent);
+}
+
+.desktop.night-mode .readme-repo:hover {
+  background: #deedf6;
+  border-color: var(--color-primary);
+}
+
 .desktop.night-mode .taskbar-logo {
   color: #eaf2f8;
   background: rgba(95, 168, 211, 0.14);
