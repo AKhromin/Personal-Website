@@ -21,7 +21,23 @@ This is the repository for my personal portfolio website, built to showcase my p
 
 ### Available Scripts
 
--   `npm start`: Runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
--   `npm run build`: Builds the app for production to the `build` folder.
--   `npm test`: Launches the test runner in interactive watch mode.
--   `npm run deploy`: Deploys the application to GitHub Pages.
+- Run these commands from `my-personal-website/`.
+- `npm start` or `npm run dev`: Starts Vite. Open the local address printed in the terminal (normally http://localhost:5173).
+- `npm run build`: Builds the production site into `dist/`.
+- `npm run preview`: Previews the production build locally.
+- `npm run deploy`: Builds the site automatically, then publishes `dist/` to the `gh-pages` branch for GitHub Pages.
+
+### Publishing
+
+```sh
+cd my-personal-website
+npm run deploy
+```
+
+On a fresh checkout, run `npm ci` in that directory first. Deployment requires GitHub push access to this repository. In GitHub, Settings → Pages should use **Deploy from a branch**, with **gh-pages** and **/ (root)** selected. The custom domain is [alexeykhromin.com](https://alexeykhromin.com); `public/CNAME` is copied into `dist/` during the build.
+
+Publishing updates the deployed site. Commit and push your source changes separately to save them on the main branch.
+
+### AeroCapital screenshots
+
+Add images to `my-personal-website/public/assets/images/AeroCapitalProject/`, then list them in AeroCapital's `media` array in `my-personal-website/src/data/projectsData.js`. See the README inside the screenshots folder for an example. The first image becomes the project thumbnail, and all listed images appear in the existing carousel.

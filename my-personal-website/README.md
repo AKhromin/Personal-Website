@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+# Personal website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React portfolio built with Vite and published to GitHub Pages at [alexeykhromin.com](https://alexeykhromin.com).
 
-## Available Scripts
+Run the following commands from this directory (`my-personal-website/`).
 
-In the project directory, you can run:
+## Local preview
 
-### `npm start`
+On a fresh checkout, install dependencies with `npm ci`. Start the development server with:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```sh
+npm run dev
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Open the local address printed in the terminal, normally http://localhost:5173.
 
-### `npm test`
+## Publish to GitHub Pages
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```sh
+npm run deploy
+```
 
-### `npm run build`
+This automatically runs `npm run build`, creates the production site in `dist/`, and publishes it to the `gh-pages` branch using the configured Git remote. You need GitHub push access. GitHub Settings → Pages should use **Deploy from a branch**, **gh-pages**, **/ (root)**.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The build copies `public/CNAME` so the custom domain is retained. Commit and push source changes separately to save them on the main branch; deployment only publishes the built site.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To check a production build locally, run `npm run build` and then `npm run preview`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Project content and screenshots
 
-### `npm run eject`
+Project entries live in `src/data/projectsData.js` and share the same detail layout across desktop, tablet and mobile. Optional `sections` add titled paragraphs between Features and Tech Stack.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+AeroCapital screenshots belong in `public/assets/images/AeroCapitalProject/`. See that folder's README for the matching `media` entries to add to the project data. The first listed screenshot becomes the thumbnail.

@@ -247,6 +247,9 @@ function MobileProjects({ onOpenProject }) {
         <button key={i} className="mobile-project-card" onClick={() => onOpenProject(project)}>
           <div className="mobile-project-thumb">
             {project.media[0] && <img src={project.media[0].url} alt={project.title} />}
+            {project.media.length === 0 && project.mediaPlaceholder && (
+              <span className="project-media-placeholder">{project.mediaPlaceholder}</span>
+            )}
           </div>
           <div className="mobile-project-info">
             <h3>{project.filename}</h3>

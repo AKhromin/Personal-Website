@@ -18,6 +18,9 @@ function Projects() {
               {project.media[0] && (
                 <img src={project.media[0].url} alt={project.title} />
               )}
+              {project.media.length === 0 && project.mediaPlaceholder && (
+                <span className="project-media-placeholder">{project.mediaPlaceholder}</span>
+              )}
               <span className="project-card-ext">.proj</span>
             </div>
             <span className="project-card-name">{project.filename}</span>

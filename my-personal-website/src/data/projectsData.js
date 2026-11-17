@@ -20,6 +20,7 @@ const projectsData = [
       'C++', 'Python', 'pybind11', 'NumPy', 'Pandas', 'WebSockets', 'Binance Spot API', 'Docker',
       'systemd', 'GitHub Actions', 'AWS', 'Oracle Cloud', 'pytest',
     ],
+    mediaPlaceholder: 'Work in progress',
     media: [],
   },
   {
@@ -44,7 +45,66 @@ const projectsData = [
       'Leaflet', 'React-Leaflet', 'Ultralytics YOLOv8', 'EasyOCR', 'Pillow', 'TfL Unified API',
       'OpenAI API', 'REST API', 'Node.js',
     ],
-    media: [],
+    media: [
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/Clearway/Pic1.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/Clearway/Pic2.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/Clearway/Pic3.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/Clearway/Pic4.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/Clearway/Pic5.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/Clearway/Pic6.png` },
+    ],
+  },
+  {
+    title: 'AeroCapital: Market Design & Reserve Pricing',
+    filename: 'aerocapital.proj',
+    repo: 'https://github.com/AKhromin/AIAirportSimulation',
+    summary:
+      'A reproducible simulation study investigating whether learned reserve prices outperform simple pricing rules in an airport slot market, using finite aircraft fleets, uncertain demand and explicit operating costs.',
+    description: [
+      'Built a headless, event-driven market simulator to study how reserve prices affect auction revenue, capacity utilisation and downside risk.',
+      'Compared fixed, Myerson-reference, forecast-based, Q-learning and contextual-bandit reserve policies using separate training, validation and test seeds. Published reproducible results, an interactive research dashboard and a four-page report, including negative findings and model limitations.',
+      'Finite-fleet dynamics: six airlines own 72 aircraft, with turnaround times, departures and return rotations generating new slot requests. Regression tests verify aircraft conservation.',
+      'Competitive slot auctions: seasonal Poisson demand competes for six slots per hour through a uniform-price second-price auction. Private valuations are independent of the airport’s reserve.',
+      'Learning baselines: trained tabular Q-learning and contextual-bandit policies over 2,000 episodes each, then froze learning and exploration for evaluation.',
+      'Demand forecasting: fitted OLS with hour-of-day indicators, lagged demand and fuel conditions; measured out-of-sample RMSE against a seasonal-naive baseline.',
+      'Controlled experiments: completed 450 primary evaluations across three scenarios and 1,350 exploratory stress evaluations, using 30 paired test seeds per policy and setting.',
+      'Statistical and risk analysis: reported paired bootstrap confidence intervals, lower-tail CVaR(5%), maximum drawdown, daily profit variability, unused capacity and rejected requests.',
+      'Theoretical validation: recovered the known optimal reserve of 0.50 in a separate, cost-free single-item auction benchmark with independent U[0,1] valuations.',
+      'Reproducibility: one-command regeneration of CSVs and four research figures, with fixed seeds, saved configurations, frozen policies and automated GitHub checks.',
+    ],
+    sections: [
+      {
+        title: 'Research Findings',
+        paragraphs: [
+          'The validation-selected $1,200 fixed reserve achieved the highest mean test profit in all three named scenarios.',
+          'In the base scenario, it outperformed Q-learning by $25,029 per synthetic 14-day episode, with a 95% paired bootstrap confidence interval of $4,328–$44,158. The contextual bandit’s difference from fixed was inconclusive.',
+          'The results demonstrate that greater algorithmic complexity does not guarantee better pricing decisions in this model.',
+        ],
+      },
+      {
+        title: 'Limitations',
+        paragraphs: [
+          'The market uses synthetic, uncalibrated valuations, costs and traffic. Airlines are nonstrategic, and the conclusions apply to the specified simulation rather than real airport operations. Thirty test seeds also provide limited precision for extreme-tail risk estimates.',
+          'This project studies market design and pricing under uncertainty, not trading signals. The airport map and terminal simulation serve as supporting visual explainers.',
+        ],
+      },
+    ],
+    technologies: [
+      'TypeScript', 'Node.js', 'React', 'Recharts', 'Zustand', 'PixiJS', 'Vite', 'Vitest',
+      'GitHub Actions',
+    ],
+    media: [
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic0.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic1.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic2.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic3.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic4.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic5.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic6.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic7.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic8.png` },
+      { type: 'image', url: `${import.meta.env.BASE_URL}assets/images/AeroCapitalProject/Pic9.png` },
+    ],
   },
   {
     title: 'AWS One Day Proof of Concept',

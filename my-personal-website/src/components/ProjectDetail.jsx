@@ -60,6 +60,13 @@ function ProjectDetail({ project }) {
         ))}
       </div>
 
+      {project.media.length === 0 && project.mediaPlaceholder && (
+        <>
+          <hr className="readme-divider" />
+          <div className="readme-media-placeholder">{project.mediaPlaceholder}</div>
+        </>
+      )}
+
       {project.media.length > 0 && (
         <>
         <hr className="readme-divider" />
@@ -130,6 +137,15 @@ function ProjectDetail({ project }) {
           </ul>
         </>
       )}
+
+      {project.sections?.map((section) => (
+        <section key={section.title}>
+          <h2 className="readme-section-title">{section.title}</h2>
+          {section.paragraphs.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </section>
+      ))}
 
       {/* Tech stack */}
       <hr className="readme-divider" />
