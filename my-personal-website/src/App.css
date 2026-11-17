@@ -571,7 +571,7 @@ body {
 }
 
 /* ============================================
-   PROJECTS FOLDER — Grid that fills the window
+   PROJECTS FOLDER
    ============================================ */
 
 .folder-view {
@@ -579,9 +579,50 @@ body {
 }
 
 .projects-folder {
+  --color-project-accent: var(--color-primary);
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.projects-view-toggle {
+  align-self: flex-end;
+  flex: 0 0 auto;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(40, 75, 99, 0.2);
+  border-radius: 8px;
+  background: rgba(40, 75, 99, 0.04);
+}
+
+.projects-view-toggle button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--color-project-accent);
+  font: 600 12px 'Space Grotesk', sans-serif;
+  cursor: pointer;
+}
+
+.projects-view-toggle button:hover {
+  background: rgba(40, 75, 99, 0.08);
+}
+
+.projects-view-toggle button[aria-pressed='true'] {
+  background: var(--color-project-accent);
+  color: white;
+}
+
+.projects-view-toggle button:focus-visible {
+  outline: 2px solid var(--color-project-accent);
+  outline-offset: 1px;
 }
 
 .projects-grid {
@@ -669,6 +710,14 @@ body {
   font-family: 'Space Grotesk', sans-serif;
 }
 
+.project-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
 .project-card-name {
   font-size: 12px;
   font-weight: 600;
@@ -705,6 +754,36 @@ body {
   background: var(--color-primary);
   color: white;
   font-family: 'Space Grotesk', sans-serif;
+}
+
+.projects-grid.list-view {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+}
+
+.list-view .project-card {
+  display: grid;
+  grid-template-columns: clamp(84px, 20%, 128px) minmax(0, 1fr);
+  gap: 14px;
+  padding: 8px 12px;
+}
+
+.list-view .project-card-info {
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.list-view :is(.project-card-name, .project-card-summary) {
+  text-align: left;
+}
+
+.list-view .project-card-tags {
+  justify-content: flex-start;
+}
+
+.list-view .project-media-placeholder {
+  padding: 4px 4px 16px;
+  font-size: 10px;
 }
 
 /* ============================================
